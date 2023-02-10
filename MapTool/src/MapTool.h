@@ -1,7 +1,7 @@
 #pragma once
 #include "Widgets.h"
 
-class CharacterTool : public KGCA41B::Scene
+class MapTool : public KGCA41B::Scene
 {
 public:
 	virtual void OnInit();
@@ -17,10 +17,14 @@ public:
 
 private:
 	entt::registry reg_scene;
+	KGCA41B::Level level;
 
 	KGCA41B::RenderSystem sys_render;
 	KGCA41B::CameraSystem sys_camera;
 	KGCA41B::InputSystem  sys_input;
 
+	entt::entity ent;
+	Camera debug_camera_;
+	InputMapping debug_input_;
 };
 

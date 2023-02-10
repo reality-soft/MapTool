@@ -16,6 +16,7 @@ void GwMainMenu::Update()
 {
     msg_ = MsgType::NONE;
 	ImGui::SetCurrentContext(GUI->GetContext());
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void GwMainMenu::Render()
@@ -36,7 +37,6 @@ void GwResViewer::Update()
     {
         res_id_map = RESOURCE->GetTotalResID();
     }
-    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void GwResViewer::Render()
