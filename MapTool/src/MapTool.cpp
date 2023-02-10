@@ -9,12 +9,12 @@ void MapTool::OnInit()
 
 	LoadResource();
 	
-	level.CreateLevel(128, 128, 10, 10, "LevelVS.cso");
-	level.DesignLevel("", "LevelPS.cso");
+	level.CreateLevel(128, 128, 10, 10);
+	level.vs_id_ = "LevelVS.cso";
+	level.ps_id_ = "LevelPS.cso";
+	level.texture_id = { "Ground.png" };
 
-	level.Render();
 	ComponentSystem::GetInst()->OnInit(reg_scene);
-
 
 	debug_camera_.position = { 0, 0, -50, 0 };
 	debug_camera_.look = { 0, 0, 0, 0 };

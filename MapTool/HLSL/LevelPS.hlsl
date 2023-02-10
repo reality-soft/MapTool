@@ -23,5 +23,5 @@ float4 PS(PS_OUT input) : SV_Target
 
 	float4 tex_color = g_txTex.Sample(g_SampleWrap, input.t);
 	float light_color = max(0.2f, dot(input.n, -default_light));
-	return float4(1, 1, 1, 1);//input.c;// *light_color; // tex_color* light_color;
+	return input.c * tex_color* light_color;
 }
