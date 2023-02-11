@@ -16,6 +16,7 @@ void GwMainMenu::Update()
 {
     msg_ = MsgType::NONE;
 	ImGui::SetCurrentContext(GUI->GetContext());
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void GwMainMenu::Render()
@@ -36,7 +37,6 @@ void GwResViewer::Update()
     {
         res_id_map = RESOURCE->GetTotalResID();
     }
-    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void GwResViewer::Render()
@@ -101,6 +101,25 @@ void GwResViewer::Render()
         }
 
         ++i;
+    }
+    ImGui::End();
+}
+
+void GwPorperty::Update()
+{
+    mouse_pos_text = "[Mouse Screen Pos]\n";
+    mouse_pos_text += "X : " + to_string(DINPUT->GetMousePosition().x);
+    mouse_pos_text += "Y : " + to_string(DINPUT->GetMousePosition().y);
+}
+
+void GwPorperty::Render()
+{
+    ImGui::Begin("Porperty");
+    {
+        ImGui::SetWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+
+        ImGui::Text(mouse_pos_text.c_str());
+
     }
     ImGui::End();
 }

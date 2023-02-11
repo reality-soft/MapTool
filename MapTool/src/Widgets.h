@@ -33,6 +33,8 @@ class GwPorperty : public KGCA41B::GuiWidget
 {
 public:
 	XMMATRIX world_transform_;
+	POINT mouse_pos;
+	string mouse_pos_text;
 
 public:
 	virtual void Update() override;
