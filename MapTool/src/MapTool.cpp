@@ -16,7 +16,7 @@ void MapTool::OnInit()
 
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	debug_camera_.position = { 0, 0, -50, 0 };
+	debug_camera_.position = { 0, 30, 50, 0 };
 	debug_camera_.look = { 0, 0, 0, 0 };
 	debug_camera_.target = { 0, 0, 0, 0 };
 	debug_camera_.up = { 0, 1, 0, 0 };
@@ -39,7 +39,8 @@ void MapTool::OnInit()
 	sys_input.OnCreate(reg_scene);
 
 	//GUI
-	GUI->AddWidget("main_menu", &gw_main_menu_);
+	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
+	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
 }
 
 void MapTool::OnUpdate()
@@ -48,6 +49,12 @@ void MapTool::OnUpdate()
 
 	sys_input.OnUpdate(reg_scene);
 	sys_camera.OnUpdate(reg_scene);
+	if (sys_camera.mouse_ray != nullptr)
+	{
+		PHYSICS->RaycastMouse(sys_camera.mouse_ray);
+		delete sys_camera.mouse_ray;
+		sys_camera.mouse_ray = nullptr;
+	}
 
 }
 

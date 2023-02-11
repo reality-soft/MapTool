@@ -14,6 +14,7 @@ public:
 
 public:
 	GwMainMenu gw_main_menu_;
+	GwPorperty gw_property_;
 
 private:
 	entt::registry reg_scene;

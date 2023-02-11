@@ -104,3 +104,22 @@ void GwResViewer::Render()
     }
     ImGui::End();
 }
+
+void GwPorperty::Update()
+{
+    mouse_pos_text = "[Mouse Screen Pos]\n";
+    mouse_pos_text += "X : " + to_string(DINPUT->GetMousePosition().x);
+    mouse_pos_text += "Y : " + to_string(DINPUT->GetMousePosition().y);
+}
+
+void GwPorperty::Render()
+{
+    ImGui::Begin("Porperty");
+    {
+        ImGui::SetWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+
+        ImGui::Text(mouse_pos_text.c_str());
+
+    }
+    ImGui::End();
+}
