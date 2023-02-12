@@ -10,13 +10,14 @@ void MapTool::OnInit()
 	LoadResource();
 	
 	level.CreateLevel(128, 128, 10, 10);
+	level.CreateHeightField(-1, 1);
 	level.vs_id_ = "LevelVS.cso";
 	level.ps_id_ = "LevelPS.cso";
 	level.texture_id = { "Ground.png" };
 
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	debug_camera_.position = { 0, 30, 50, 0 };
+	debug_camera_.position = { 0, 30, -50, 0 };
 	debug_camera_.look = { 0, 0, 0, 0 };
 	debug_camera_.target = { 0, 0, 0, 0 };
 	debug_camera_.up = { 0, 1, 0, 0 };
@@ -43,7 +44,7 @@ void MapTool::OnInit()
 	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
 }
 
-void MapTool::OnUpdate()
+void MapTool::OnUpdate()  
 {
 	level.Update();
 
@@ -51,7 +52,8 @@ void MapTool::OnUpdate()
 	sys_camera.OnUpdate(reg_scene);
 	if (sys_camera.mouse_ray != nullptr)
 	{
-		PHYSICS->RaycastMouse(sys_camera.mouse_ray);
+		XMVECTOR hitpoint = level.LevelPicking(sys_camera.mouse_ray);   
+
 		delete sys_camera.mouse_ray;
 		sys_camera.mouse_ray = nullptr;
 	}
@@ -64,7 +66,7 @@ void MapTool::OnRender()
 	sys_render.OnUpdate(reg_scene);
 
 	// GUI
-	GUI->RenderWidgets();
+	GUI->RenderWidgets();  
 
 	switch (gw_main_menu_.msg_)
 	{
