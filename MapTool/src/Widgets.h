@@ -34,7 +34,16 @@ class GwPorperty : public KGCA41B::GuiWidget
 public:
 	XMMATRIX world_transform_;
 	POINT mouse_pos;
+
+	XMVECTOR camera_pos;
+	XMVECTOR ray_start;
+	XMVECTOR ray_end;
+
 	string mouse_pos_text;
+
+	string camera_pos_text;
+	string ray_start_text;
+	string ray_end_text;
 
 public:
 	virtual void Update() override;

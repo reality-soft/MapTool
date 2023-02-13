@@ -11,6 +11,7 @@ struct VS_OUT
 	float3 n : NORMAL;
 	float4 c : COLOR0;
 	float2 t : TEXCOORD0;
+	float4 circle_color : TEXCOORD1;
 };
 
 cbuffer cb_data : register(b0)
@@ -22,6 +23,14 @@ cbuffer cb_viewproj : register(b1)
 {
 	matrix g_matView;
 	matrix g_matProj;
+}
+
+cbuffer cb_hitcircle : register(b2)
+{
+	bool   is_hit;
+	float  circle_radius;
+	float4 hitpoint;
+	float4 circle_color;
 }
 
 VS_OUT VS(VS_IN input)
@@ -37,6 +46,17 @@ VS_OUT VS(VS_IN input)
 	output.n = input.n;
 	output.c = input.c;
 	output.t = input.t;
+
+	output.circle_color = float4(1, 1, 1, 1);
+
+	if (is_hit)
+	{
+		float length_from_point = length((vLocal - hitpoint));
+		if (length_from_point < circle_radius)
+		{
+			output.circle_color = circle_color;
+		}
+	}
 
 	return output;
 }

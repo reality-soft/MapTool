@@ -4,6 +4,7 @@ struct PS_OUT
 	float3 n : NORMAL;
 	float4 c : COLOR0;
 	float2 t : TEXCOORD0;
+	float4 circle_color : TEXCOORD1;
 };
 
 
@@ -23,5 +24,5 @@ float4 PS(PS_OUT input) : SV_Target
 
 	float4 tex_color = g_txTex.Sample(g_SampleWrap, input.t);
 	float light_color = max(0.2f, dot(input.n, -default_light));
-	return input.c * tex_color* light_color;
+	return input.c * tex_color * light_color * input.circle_color;
 }
