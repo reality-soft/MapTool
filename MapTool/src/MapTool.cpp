@@ -10,7 +10,7 @@ void MapTool::OnInit()
 	LoadResource();
 	
 	level.CreateLevel(128, 128, 10, 10);
-	level.CreateHeightField(-1, 1);
+	level.CreateHeightField(-1, 1);  
 	level.vs_id_ = "LevelVS.cso";
 	level.ps_id_ = "LevelPS.cso";
 	level.texture_id = { "Ground.png" };
@@ -24,7 +24,7 @@ void MapTool::OnInit()
 	debug_camera_.near_z = 1.f;
 	debug_camera_.far_z = 10000.f;
 	debug_camera_.fov = XMConvertToRadians(45);
-	debug_camera_.yaw = 0;
+	debug_camera_.yaw = 0;  
 	debug_camera_.pitch = 0;
 	debug_camera_.roll = 0;
 	debug_camera_.speed = 30;
@@ -40,23 +40,25 @@ void MapTool::OnInit()
 	sys_input.OnCreate(reg_scene);
 
 	//GUI
-	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
-	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
+	//GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
+	//GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
 }
 
-void MapTool::OnUpdate()  
+void MapTool::OnUpdate()
 {
-	level.Update();
-
 	sys_input.OnUpdate(reg_scene);
 	sys_camera.OnUpdate(reg_scene);
-	if (sys_camera.mouse_ray != nullptr)
-	{
-		XMVECTOR hitpoint = level.LevelPicking(sys_camera.mouse_ray);   
 
-		delete sys_camera.mouse_ray;
-		sys_camera.mouse_ray = nullptr;
-	}
+	gw_property_.camera_pos = sys_camera.GetCamera()->position;
+
+	MouseRay ray = sys_camera.CreateMouseRay();   
+
+	level.LevelPicking(ray, 100.f, XMFLOAT4(0.5, 0, 0, 1.f));
+	RPtoXM(ray.start_point, gw_property_.ray_start);
+	RPtoXM(ray.end_point, gw_property_.ray_end);
+	
+	level.Update();
+
 
 }
 
@@ -66,21 +68,21 @@ void MapTool::OnRender()
 	sys_render.OnUpdate(reg_scene);
 
 	// GUI
-	GUI->RenderWidgets();  
+	//GUI->RenderWidgets();  
 
-	switch (gw_main_menu_.msg_)
-	{
-	case MsgType::NONE: break;
+	//switch (gw_main_menu_.msg_)
+	//{
+	//case MsgType::NONE: break;
 
-	case MsgType::OW_RES_VIEWER:
-	{
-		GwResViewer* gw_res_viewer = new GwResViewer;
-		if (GUI->FindWidget(GWNAME(gw_res_viewer)) == nullptr)
-		{
-			GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
-		}
-	}
-	}
+	//case MsgType::OW_RES_VIEWER:
+	//{
+	//	GwResViewer* gw_res_viewer = new GwResViewer;
+	//	if (GUI->FindWidget(GWNAME(gw_res_viewer)) == nullptr)
+	//	{
+	//		GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
+	//	}
+	//}
+	//}
 }
 
 void MapTool::OnRelease()
