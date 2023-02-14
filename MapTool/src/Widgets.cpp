@@ -107,24 +107,27 @@ void GwResViewer::Render()
 
 void GwPorperty::Update()
 {
-    mouse_pos_text = "[Mouse Screen Pos]\n";
-    mouse_pos_text += "X : " + to_string(DINPUT->GetMousePosition().x);
-    mouse_pos_text += "Y : " + to_string(DINPUT->GetMousePosition().y);
+    POINT cursor_pos;
+    GetCursorPos(&cursor_pos);
+    ScreenToClient(ENGINE->GetWindowHandle(), &cursor_pos);
 
-    camera_pos_text = "[Camera Pos]\n";
-    mouse_pos_text += "X : " + to_string(camera_pos.m128_f32[0]);
-    mouse_pos_text += "Y : " + to_string(camera_pos.m128_f32[1]);
-    mouse_pos_text += "Z : " + to_string(camera_pos.m128_f32[2]);
+    mouse_pos_text =  "\n[Mouse Screen Pos]\n";
+    mouse_pos_text += "\nX : " + to_string(cursor_pos.x);
+    mouse_pos_text += "\nY : " + to_string(cursor_pos.y);
+    mouse_pos_text += "\nNDC X : " + to_string(ndc_pos.x);
+    mouse_pos_text += "\nNDC Y : " + to_string(ndc_pos.y);
 
-    ray_start_text = "[Mouse Start Pos\n]";
-    ray_start_text += "X : " + to_string(ray_start.m128_f32[0]);
-    ray_start_text += "Y : " + to_string(ray_start.m128_f32[1]);
-    ray_start_text += "Z : " + to_string(ray_start.m128_f32[2]);
 
-    ray_end_text = "[Mouse End Pos\n]";
-    ray_end_text += "X : " + to_string(ray_end.m128_f32[0]);
-    ray_end_text += "Y : " + to_string(ray_end.m128_f32[1]);
-    ray_end_text += "Z : " + to_string(ray_end.m128_f32[2]);
+    camera_pos_text = "\n[Camera Pos]\n";
+    camera_pos_text += "\nX : " + to_string(camera_pos.m128_f32[0]);
+    camera_pos_text += "\nY : " + to_string(camera_pos.m128_f32[1]);
+    camera_pos_text += "\nZ : " + to_string(camera_pos.m128_f32[2]);
+
+    ray_hitpoint_text_  = "\n[Ray Hit Point\n]";
+    ray_hitpoint_text_ += "\nX : " + to_string(ray_hitpoint_.m128_f32[0]);
+    ray_hitpoint_text_ += "\nY : " + to_string(ray_hitpoint_.m128_f32[1]);
+    ray_hitpoint_text_ += "\nZ : " + to_string(ray_hitpoint_.m128_f32[2]);
+
 }
 
 void GwPorperty::Render()
@@ -135,9 +138,7 @@ void GwPorperty::Render()
 
         ImGui::Text(camera_pos_text.c_str());
         ImGui::Text(mouse_pos_text.c_str());
-        ImGui::Text(ray_start_text.c_str());
-        ImGui::Text(ray_end_text.c_str());
-
+        ImGui::Text(ray_hitpoint_text_.c_str());
     }
     ImGui::End();
 }
