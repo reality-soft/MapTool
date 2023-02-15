@@ -2,6 +2,7 @@
 #include "Engine_include.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
+#define NOT(a) a = !a
 using namespace KGCA41B;
 
 enum class MsgType
@@ -33,17 +34,17 @@ class GwPorperty : public KGCA41B::GuiWidget
 {
 public:
 	XMMATRIX world_transform_;
+
 	POINT mouse_pos;
-
-	XMVECTOR camera_pos;
-	XMVECTOR ray_start;
-	XMVECTOR ray_end;
-
 	string mouse_pos_text;
 
+	XMVECTOR camera_pos;
+	XMFLOAT2 ndc_pos;
 	string camera_pos_text;
-	string ray_start_text;
-	string ray_end_text;
+
+	XMVECTOR ray_hitpoint_;
+	string ray_hitpoint_text_;
+
 
 public:
 	virtual void Update() override;

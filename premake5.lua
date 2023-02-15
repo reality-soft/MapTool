@@ -72,6 +72,11 @@ project "MapTool"
 		shaderentry "PS"
 	    shadermodel "5.0"
 
+	filter "files:**GS.hlsl"
+	    shadertype "Geometry"
+		shaderentry "GS"
+	    shadermodel "5.0"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "Off"
