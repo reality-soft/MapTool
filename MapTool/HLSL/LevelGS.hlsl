@@ -1,18 +1,17 @@
-struct GSOutput
-{
-	float4 pos : SV_POSITION;
-};
+#include "LevelHeader.hlsli"
+
+
+
+
 
 [maxvertexcount(3)]
-void main(
-	triangle float4 input[3] : SV_POSITION, 
-	inout TriangleStream< GSOutput > output
-)
+void GS(triangle VS_OUT input[3], inout TriangleStream<VS_OUT> output)
 {
-	for (uint i = 0; i < 3; i++)
+	VS_OUT gs_out = (VS_OUT)0;
+
+	for (int i = 0; i < 3; ++i)
 	{
-		GSOutput element;
-		element.pos = input[i];
-		output.Append(element);
+		gs_out = input[i];
+		output.Append(gs_out);
 	}
 }
