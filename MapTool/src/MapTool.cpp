@@ -13,11 +13,13 @@ void MapTool::OnInit()
 	level.CreateHeightField(-1, 1);  
 	level.vs_id_ = "LevelVS.cso";
 	level.ps_id_ = "LevelPS.cso";
+	level.gs_id_ = "LevelGS.cso";
+	level.edit_mode = false;
 	level.texture_id = { "Ground.png" };
 
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	debug_camera_.position = { 0, 300, 0, 0 };
+	debug_camera_.position = { 0, 100, -200, 0 };
 	debug_camera_.look = { 0, -1, 0, 0 };
 	debug_camera_.up = { 0, 1, 0, 0 };
 	debug_camera_.near_z = 1.f;
@@ -55,7 +57,7 @@ void MapTool::OnUpdate()
 
 	XMVECTOR hitpoint = level.LevelPicking(ray, 100.f, XMFLOAT4(0.5, 0, 0, 1.f));
 	gw_property_.ray_hitpoint_ = hitpoint;
-
+	
 	level.Update();
 
 
@@ -80,8 +82,14 @@ void MapTool::OnRender()
 		{
 			GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
 		}
+		else
+		{
+			NOT(GUI->FindWidget(GWNAME(gw_res_viewer))->open_);
+		}
 	}
 	}
+
+
 }
 
 void MapTool::OnRelease()

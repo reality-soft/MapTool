@@ -16,7 +16,6 @@ void GwMainMenu::Update()
 {
     msg_ = MsgType::NONE;
 	ImGui::SetCurrentContext(GUI->GetContext());
-    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void GwMainMenu::Render()
@@ -33,6 +32,8 @@ void GwMainMenu::Render()
 
 void GwResViewer::Update()
 {
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
+
     if (res_id_map.empty())
     {
         res_id_map = RESOURCE->GetTotalResID();
@@ -43,8 +44,8 @@ void GwResViewer::Render()
 {
     ImGui::Begin("ResourceViewer", &open_);
     {
-        ImGui::SetWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
-    }
+        ImGui::SetWindowSize(ImVec2(500, 500));
+    }    
 
     int i = 0;
     for (auto res_id : res_id_map)

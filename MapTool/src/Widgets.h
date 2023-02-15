@@ -2,6 +2,7 @@
 #include "Engine_include.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
+#define NOT(a) a = !a
 using namespace KGCA41B;
 
 enum class MsgType
