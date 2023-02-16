@@ -187,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
+    <None Include="HLSL\LevelHeader.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

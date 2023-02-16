@@ -9,12 +9,12 @@ void MapTool::OnInit()
 
 	LoadResource();
 	
-	level.CreateLevel(128, 128, 10, 10);
+	bool created = level.CreateLevel(128, 128, 10, 10);
 	level.CreateHeightField(-1, 1);  
 	level.vs_id_ = "LevelVS.cso";
 	level.ps_id_ = "LevelPS.cso";
 	level.gs_id_ = "LevelGS.cso";
-	level.edit_mode = false;
+	level.edit_mode = true;
 	level.texture_id = { "Ground.png" };
 
 	ComponentSystem::GetInst()->OnInit(reg_scene);
@@ -51,12 +51,7 @@ void MapTool::OnUpdate()
 	sys_camera.OnUpdate(reg_scene);
 
 	gw_property_.camera_pos = sys_camera.GetCamera()->position;
-
-	MouseRay ray = sys_camera.CreateMouseRay();   
 	gw_property_.ndc_pos = sys_camera.ndc;
-
-	XMVECTOR hitpoint = level.LevelPicking(ray, 100.f, XMFLOAT4(0.5, 0, 0, 1.f));
-	gw_property_.ray_hitpoint_ = hitpoint;
 	
 	level.Update();
 
@@ -89,12 +84,21 @@ void MapTool::OnRender()
 	}
 	}
 
+	Edit();
 
 }
 
 void MapTool::OnRelease()
 {
 	RESOURCE->Release();
+}
+
+void MapTool::Edit()
+{
+
+	MouseRay ray = sys_camera.CreateMouseRay();
+
+	level.LevelEdit(ray, 100.f, XMFLOAT4(0.5, 0, 0, 1.f));
 }
 
 void MapTool::LoadResource()

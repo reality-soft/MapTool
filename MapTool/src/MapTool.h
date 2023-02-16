@@ -9,6 +9,8 @@ public:
 	virtual void OnRender();
 	virtual void OnRelease();
 
+	void Edit();
+
 public:
 	void LoadResource();
 
