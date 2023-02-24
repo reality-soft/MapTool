@@ -1,5 +1,6 @@
 #include "MapTool.h"
 #include "ComponentSystem.h"
+#include "PickingMgr.h"
 
 using namespace KGCA41B;
 
@@ -9,15 +10,17 @@ void MapTool::OnInit()
 
 	LoadResource();
 	
-	level.CreateLevel(128, 128, 10, 10);
-	level.CreateHeightField(-1, 1);  
-	level.vs_id_ = "LevelVS.cso";
-	level.ps_id_ = "LevelPS.cso";
-	level.gs_id_ = "LevelGS.cso";
-	level.edit_mode = false;
-	level.texture_id = { "Ground.png" };
-
 	ComponentSystem::GetInst()->OnInit(reg_scene);
+
+	level_editor_ = new LevelEditor;
+	bool created = level_editor_->CreateLevel(65, 65, 10, 1);
+	level_editor_->CreateHeightField(-128, 128);  
+	level_editor_->vs_id_ = "LevelEditorVS.cso";
+	level_editor_->ps_id_ = "LevelEditorPS.cso";
+	level_editor_->gs_id_ = "LevelEditorGS.cso";
+	level_editor_->texture_id = { "WhiteTile.png" };
+	level_editor_->CreateEditSOStage();
+
 
 	debug_camera_.position = { 0, 100, -200, 0 };
 	debug_camera_.look = { 0, -1, 0, 0 };
@@ -30,11 +33,12 @@ void MapTool::OnInit()
 	debug_camera_.roll = 0;
 	debug_camera_.speed = 100;
 	debug_camera_.tag = "Player";
-	reg_scene.emplace<Camera>(ent, debug_camera_);
+	reg_scene.emplace<C_Camera>(ent, debug_camera_);
 
 	debug_input_.tag = "Player";
-	reg_scene.emplace<InputMapping>(ent, debug_input_);
+	reg_scene.emplace<C_InputMapping>(ent, debug_input_);
 
+	sys_light.OnCreate(reg_scene);
 	sys_render.OnCreate(reg_scene);
 	sys_camera.TargetTag(reg_scene, "Player");
 	sys_camera.OnCreate(reg_scene);
@@ -43,33 +47,27 @@ void MapTool::OnInit()
 	//GUI
 	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
 	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
+	
+	PICKING->Init(&sys_camera);
+	instanced_foliage_.Init(level_editor_, reg_scene);
+	res_selector_.Init();
+	//QUADTREE->Init(level_editor_, 4);
+
+	FbxMgr::GetInst()->ImportAndSaveFbx("../../Contents/STM/LeeEnfieldMKIII.fbx");
+
 }
 
 void MapTool::OnUpdate()
 {
 	sys_input.OnUpdate(reg_scene);
 	sys_camera.OnUpdate(reg_scene);
+	sys_light.OnUpdate(reg_scene);
 
-	gw_property_.camera_pos = sys_camera.GetCamera()->position;
+	//QUADTREE->Frame(&sys_camera);
 
-	MouseRay ray = sys_camera.CreateMouseRay();   
-	gw_property_.ndc_pos = sys_camera.ndc;
+	PICKING->Frame();
 
-	XMVECTOR hitpoint = level.LevelPicking(ray, 100.f, XMFLOAT4(0.5, 0, 0, 1.f));
-	gw_property_.ray_hitpoint_ = hitpoint;
-	
-	level.Update();
-
-
-}
-
-void MapTool::OnRender()
-{   
-	level.Render();
-	sys_render.OnUpdate(reg_scene);
-
-	//GUI
-	GUI->RenderWidgets();  
+	// Gui Msg Proc;
 
 	switch (gw_main_menu_.msg_)
 	{
@@ -77,24 +75,52 @@ void MapTool::OnRender()
 
 	case MsgType::OW_RES_VIEWER:
 	{
-		GwResViewer* gw_res_viewer = new GwResViewer;
-		if (GUI->FindWidget(GWNAME(gw_res_viewer)) == nullptr)
+		res_selector_.Active();
+	} break;
+	case MsgType::OW_LEVEL_EDITOR:
+	{
+		if (GUI->FindWidget(GWNAME(gw_level_editor_)) == nullptr)
 		{
-			GUI->AddWidget(GWNAME(gw_res_viewer), gw_res_viewer);
+			gw_level_editor_.editing_level = this->level_editor_;
+			GUI->AddWidget(GWNAME(gw_level_editor_), &gw_level_editor_);
 		}
 		else
 		{
-			NOT(GUI->FindWidget(GWNAME(gw_res_viewer))->open_);
+			NOT(GUI->FindWidget(GWNAME(gw_level_editor_))->open_);
 		}
+	} break;
+	case MsgType::OW_INSTANCED_FOLIAGE:
+	{
+		instanced_foliage_.Active();
 	}
 	}
+}
+
+void MapTool::OnRender()
+{   
+	//sys_render.OnUpdate(reg_scene);
+	level_editor_->Update();
+	level_editor_->SetEditSOStage();
+	level_editor_->Render(false);
 
 
+
+
+	//QUADTREE->Render();
+
+	//GUI
+	GUI->RenderWidgets();
 }
 
 void MapTool::OnRelease()
 {
+	PICKING->Release();
 	RESOURCE->Release();
+}
+
+void MapTool::Edit()
+{
+	level_editor_->LevelEdit();
 }
 
 void MapTool::LoadResource()
