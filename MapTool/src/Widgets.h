@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine_include.h"
+#include "LevelEditor.h"
 
 #define GWNAME(gwclass) typeid(gwclass).name()
 #define NOT(a) a = !a
@@ -8,7 +9,9 @@ using namespace KGCA41B;
 enum class MsgType
 {
 	NONE,
+	OW_LEVEL_EDITOR,
 	OW_RES_VIEWER,
+	OW_INSTANCED_FOLIAGE,
 };
 
 class GwMainMenu : public KGCA41B::GuiWidget
@@ -16,18 +19,32 @@ class GwMainMenu : public KGCA41B::GuiWidget
 public:
 	virtual void Update() override;
 	virtual void Render() override;
-
+	
 	MsgType msg_ = MsgType::NONE;
 };
 
-class GwResViewer : public KGCA41B::GuiWidget
+class GwLevelEditor : public KGCA41B::GuiWidget
 {
 public:
 	virtual void Update() override;
 	virtual void Render() override;
+	
+	void Gernate(Level* new_level);
+public:
+	// regenerating
+	int cell_count_ = 4;
+	int cell_distance_ = 1;
+	int uv_scale_ = 10;
 
-private:
-	map<string, string> res_id_map;
+	// sculpting
+	bool brush_on_ = true;
+	float brush_size_ = 100;
+
+	LevelEditor* editing_level = nullptr;
+};
+
+class GwResViewer : public KGCA41B::GuiWidget
+{
 };
 
 class GwPorperty : public KGCA41B::GuiWidget
@@ -35,17 +52,7 @@ class GwPorperty : public KGCA41B::GuiWidget
 public:
 	XMMATRIX world_transform_;
 
-	POINT mouse_pos;
 	string mouse_pos_text;
-
-	XMVECTOR camera_pos;
-	XMFLOAT2 ndc_pos;
-	string camera_pos_text;
-
-	XMVECTOR ray_hitpoint_;
-	string ray_hitpoint_text_;
-
-
 public:
 	virtual void Update() override;
 	virtual void Render() override;

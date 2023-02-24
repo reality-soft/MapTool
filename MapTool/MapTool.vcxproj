@@ -160,34 +160,60 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
+    <ClInclude Include="src\Object\LevelInstanced.h" />
+    <ClInclude Include="src\InstancedFoliage.h" />
+    <ClInclude Include="src\PickingMgr.h" />
+    <ClInclude Include="src\ResourceSelector.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
+    <ClCompile Include="src\Object\LevelInstanced.cpp" />
+    <ClCompile Include="src\InstancedFoliage.cpp" />
+    <ClCompile Include="src\PickingMgr.cpp" />
+    <ClCompile Include="src\ResourceSelector.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HLSL\LevelGS.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>GS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelVS.hlsl">
+    <FxCompile Include="HLSL\InstancingVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\LevelEditorGS.hlsl">
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>GS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\LevelEditorPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\LevelEditorVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\StaticMeshVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\SurfacePS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EnableUnboundedDescriptorTables Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableUnboundedDescriptorTables>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\premake5.lua" />
-    <None Include="HLSL\LevelHeader.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
