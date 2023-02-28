@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;..\..\SDK\ASSIMP\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -90,7 +90,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Engine.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;fmod_vc.lib;fmodL_vc.lib;ImGui_Win32_Dx11_D.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;..\..\SDK\ASSIMP\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\MapTool\*.dll"</Command>
@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;..\..\SDK\ASSIMP\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -120,7 +120,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>Engine.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;fmod_vc.lib;fmodL_vc.lib;ImGui_Win32_Dx11_D.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;..\..\SDK\ASSIMP\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\MapTool\*.dll"</Command>
@@ -135,7 +135,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Engine;..\..\Game-Engine\Engine\src\ECS;..\..\Game-Engine\Engine\src\Engine\SingletonClass;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;..\..\SDK\RP3D\include;..\..\SDK\ASSIMP\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -150,7 +150,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>Engine.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;fmod_vc.lib;fmodL_vc.lib;ImGui_Win32_Dx11_D.lib;reactphysics3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\output\bin\Debug-windows-x86_64\Engine;..\..\SDK\DirectXTK\lib;..\..\SDK\FBXSDK\lib\debug;..\..\SDK\FMOD\lib\debug;..\..\SDK\IMGUI\lib;..\..\SDK\RP3D\lib\debug;..\..\SDK\ASSIMP\include;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>copy "..\..\output\bin\Debug-windows-x86_64\Engine\*.dll" "..\..\output\bin\Debug-windows-x86_64\MapTool\*.dll"</Command>
@@ -160,19 +160,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\InstancedFoliage.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
     <ClInclude Include="src\Object\LevelInstanced.h" />
-    <ClInclude Include="src\InstancedFoliage.h" />
     <ClInclude Include="src\PickingMgr.h" />
     <ClInclude Include="src\ResourceSelector.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\InstancedFoliage.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\Object\LevelInstanced.cpp" />
-    <ClCompile Include="src\InstancedFoliage.cpp" />
     <ClCompile Include="src\PickingMgr.cpp" />
     <ClCompile Include="src\ResourceSelector.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
@@ -199,17 +199,25 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\StaticMeshVS.hlsl">
+    <FxCompile Include="HLSL\LevelPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\LevelVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\SurfacePS.hlsl">
+    <FxCompile Include="HLSL\MeshSurfacePS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <EnableUnboundedDescriptorTables Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableUnboundedDescriptorTables>
+    </FxCompile>
+    <FxCompile Include="HLSL\StaticMeshVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

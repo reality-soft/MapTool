@@ -37,7 +37,8 @@ project "MapTool"
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
 		"../SDK/IMGUI/include",
-		"../SDK/RP3D/include"
+		"../SDK/RP3D/include",
+		"../SDK/ASSIMP/include"
 	}
 
 	libdirs
@@ -47,7 +48,8 @@ project "MapTool"
 		"../SDK/FBXSDK/lib/debug",
 		"../SDK/FMOD/lib/debug",
 		"../SDK/IMGUI/lib",
-		"../SDK/RP3D/lib/debug"
+		"../SDK/RP3D/lib/debug",
+		"../SDK/ASSIMP/include"
 	}
 
 	links

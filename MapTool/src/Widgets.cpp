@@ -26,6 +26,14 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_INSTANCED_FOLIAGE;
         }
+        if (ImGui::BeginMenu("Render Options"))
+        {
+            if (ImGui::MenuItem("Level - WireFrame"))
+            {
+                msg_ = MsgType::OPT_WIREFRAME;
+            }
+            ImGui::EndMenu();
+        }
     }
     ImGui::EndMainMenuBar();
 
@@ -73,12 +81,6 @@ void GwLevelEditor::Render()
             ImGui::SliderInt("Cell Count", &cell_count_, 4, 1024, (to_string(cell_count_) + " X " + to_string(cell_count_)).c_str());
             ImGui::InputInt("Cell Distance", &cell_distance_);
             ImGui::InputInt("UV Scale", &uv_scale_);
-
-            if (ImGui::Button("Generate"))
-            {
-                editing_level->Regenerate((UINT)cell_count_ - 1, (UINT)cell_count_ - 1, cell_distance_, uv_scale_);
-
-            }
 
         } ImGui::Separator(); ImGui::Spacing();
 

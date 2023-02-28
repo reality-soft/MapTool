@@ -1,38 +1,6 @@
 #include "LevelEditor.h"
 #include "PickingMgr.h"
 
-void LevelEditor::Regenerate(UINT num_row, UINT num_col, int cell_distance, int uv_scale)
-{
-	level_mesh_.vertices.clear();
-	level_mesh_.vertex_buffer.Get()->Release();
-	level_mesh_.vertex_buffer.ReleaseAndGetAddressOf();
-
-	level_mesh_.indices.clear();
-	level_mesh_.index_buffer.Get()->Release();
-	level_mesh_.index_buffer.ReleaseAndGetAddressOf();
-
-	so_buffer_.Get()->Release();
-	so_buffer_.ReleaseAndGetAddressOf();
-
-	hit_circle_.buffer.Get()->Release();
-	hit_circle_.buffer.ReleaseAndGetAddressOf();
-
-	edit_option_.buffer.Get()->Release();
-	edit_option_.buffer.ReleaseAndGetAddressOf();
-
-	height_list_.clear();
-
-	height_field_body_->removeCollider(height_field_collider_);
-	PHYSICS->GetPhysicsWorld()->destroyCollisionBody(height_field_body_);
-
-	height_field_shape_ = nullptr;
-	height_field_collider_ = nullptr;
-	height_field_body_ = nullptr;
-
-	CreateLevel(num_row, num_row, cell_distance, uv_scale);
-	CreateHeightField(-(int)num_row, num_row);
-}
-
 bool LevelEditor::ExportToFile(string filename)
 {
 	FileTransfer file_transfer(export_dir + filename, WRITE);
@@ -40,13 +8,46 @@ bool LevelEditor::ExportToFile(string filename)
 	// Single Datas;
 	file_transfer.WriteBinary<UINT>(&num_row_vertex_, 1);
 	file_transfer.WriteBinary<UINT>(&num_col_vertex_, 1);
-	file_transfer.WriteBinary<int>(&cell_distance_, 1);
-	file_transfer.WriteBinary<int>(&uv_scale_, 1);
+	file_transfer.WriteBinary<float>(&cell_distance_, 1);
+	file_transfer.WriteBinary<float>(&uv_scale_, 1);
 
 	// Arrays
 	file_transfer.WriteBinary<Vertex>(level_mesh_.vertices.data(), level_mesh_.vertices.size());
 	file_transfer.WriteBinary<UINT>(level_mesh_.indices.data(), level_mesh_.indices.size());
 	file_transfer.WriteBinary<string>(texture_id.data(), texture_id.size());
+
+	return true;
+}
+
+bool LevelEditor::CopyFromSavedLevel(Level* saved_level)
+{
+	LevelEditor* casted = (LevelEditor*)saved_level;
+
+	for (auto texid : casted->texture_id)
+	{
+		texture_id.push_back(texid);
+	}
+
+	level_mesh_ = casted->level_mesh_;
+	num_row_vertex_ = casted->num_row_vertex_;
+	num_col_vertex_ = casted->num_col_vertex_;
+
+	max_lod_ = casted->max_lod_;
+	cell_scale_ = casted->cell_scale_;
+	row_col_blocks_ = casted->row_col_blocks_;
+	uv_scale_ = casted->uv_scale_;
+
+	vs_id_ = "LevelEditorVS.cso";
+	ps_id_ = "LevelEditorPS.cso";
+
+	GenVertexNormal();
+	XMFLOAT2 minmax_height = GetMinMaxHeight();
+
+	if (CreateBuffers() == false)
+		return false;
+
+	if (CreateHeightField(minmax_height.x, minmax_height.y) == false)
+		return false;
 
 	return true;
 }
@@ -71,7 +72,7 @@ bool LevelEditor::CreateEditSOStage()
 	ZeroMemory(&desc, sizeof(desc));
 	ZeroMemory(&subdata, sizeof(subdata));
 
-	desc.ByteWidth = sizeof(CbHitCircle::Data);
+	desc.ByteWidth = sizeof(CbHitCircle::Data);  
 
 	desc.Usage = D3D11_USAGE_DEFAULT;
 	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -158,7 +159,7 @@ void LevelEditor::LevelEdit()
 		DX11APP->GetDeviceContext()->UpdateSubresource(edit_option_.buffer.Get(), 0, nullptr, &edit_option_.data, 0, 0);
 	}
 
-	if (DINPUT->GetMouseButton().x)
+	if (DINPUT->GetMouseState(L_BUTTON))
 	{
 		GetEditSOStage();
 	}	

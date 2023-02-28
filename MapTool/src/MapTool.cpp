@@ -6,70 +6,32 @@ using namespace KGCA41B;
 
 void MapTool::OnInit()
 {
-	DINPUT->Init(ENGINE->GetWindowHandle(), ENGINE->GetInstanceHandle());
-
-	LoadResource();
+	RESOURCE->Init("../../Contents/");
 	
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
-	level_editor_ = new LevelEditor;
-	bool created = level_editor_->CreateLevel(65, 65, 10, 1);
-	level_editor_->CreateHeightField(-128, 128);  
-	level_editor_->vs_id_ = "LevelEditorVS.cso";
-	level_editor_->ps_id_ = "LevelEditorPS.cso";
-	level_editor_->gs_id_ = "LevelEditorGS.cso";
-	level_editor_->texture_id = { "WhiteTile.png" };
-	level_editor_->CreateEditSOStage();
-
-
-	debug_camera_.position = { 0, 100, -200, 0 };
-	debug_camera_.look = { 0, -1, 0, 0 };
-	debug_camera_.up = { 0, 1, 0, 0 };
-	debug_camera_.near_z = 1.f;
-	debug_camera_.far_z = 10000.f;
-	debug_camera_.fov = XMConvertToRadians(45);
-	debug_camera_.yaw = 0;
-	debug_camera_.pitch = 0;
-	debug_camera_.roll = 0;
-	debug_camera_.speed = 100;
-	debug_camera_.tag = "Player";
-	reg_scene.emplace<C_Camera>(ent, debug_camera_);
-
-	debug_input_.tag = "Player";
-	reg_scene.emplace<C_InputMapping>(ent, debug_input_);
-
-	sys_light.OnCreate(reg_scene);
-	sys_render.OnCreate(reg_scene);
-	sys_camera.TargetTag(reg_scene, "Player");
+	sys_light.OnCreate(reg_scene);  
+	sys_camera.TargetTag(reg_scene, "Debug");  
 	sys_camera.OnCreate(reg_scene);
-	sys_input.OnCreate(reg_scene);
 
 	//GUI
 	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
 	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
 	
 	PICKING->Init(&sys_camera);
-	instanced_foliage_.Init(level_editor_, reg_scene);
+	//instanced_foliage_.Init(level_editor_, reg_scene);
 	res_selector_.Init();
-	//QUADTREE->Init(level_editor_, 4);
-
-	FbxMgr::GetInst()->ImportAndSaveFbx("../../Contents/STM/LeeEnfieldMKIII.fbx");
 
 }
 
 void MapTool::OnUpdate()
 {
-	sys_input.OnUpdate(reg_scene);
 	sys_camera.OnUpdate(reg_scene);
 	sys_light.OnUpdate(reg_scene);
 
-	//QUADTREE->Frame(&sys_camera);
-
-	PICKING->Frame();
-
 	// Gui Msg Proc;
 
-	switch (gw_main_menu_.msg_)
+	switch (gw_main_menu_.msg_)  
 	{
 	case MsgType::NONE: break;
 
@@ -81,7 +43,7 @@ void MapTool::OnUpdate()
 	{
 		if (GUI->FindWidget(GWNAME(gw_level_editor_)) == nullptr)
 		{
-			gw_level_editor_.editing_level = this->level_editor_;
+			//gw_level_editor_.editing_level = this->level_editor_;
 			GUI->AddWidget(GWNAME(gw_level_editor_), &gw_level_editor_);
 		}
 		else
@@ -93,20 +55,16 @@ void MapTool::OnUpdate()
 	{
 		instanced_foliage_.Active();
 	}
+	case MsgType::OPT_WIREFRAME:
+		NOT(QUADTREE->wire_frame);
 	}
 }
 
 void MapTool::OnRender()
 {   
-	//sys_render.OnUpdate(reg_scene);
-	level_editor_->Update();
-	level_editor_->SetEditSOStage();
-	level_editor_->Render(false);
+	LevelEdittingProcess();
 
-
-
-
-	//QUADTREE->Render();
+	SavedLevelRenderProcess();
 
 	//GUI
 	GUI->RenderWidgets();
@@ -114,16 +72,112 @@ void MapTool::OnRender()
 
 void MapTool::OnRelease()
 {
+	if (editting_level_)
+	{
+		editting_level_->ExportToFile(current_saved_file);
+		delete editting_level_;
+		editting_level_ = nullptr;
+	}
+	if (saved_level_)
+	{
+		delete saved_level_;
+		saved_level_ = nullptr;
+	}
+
+
 	PICKING->Release();
 	RESOURCE->Release();
+	QUADTREE->Release();
 }
 
-void MapTool::Edit()
+bool MapTool::LevelEdittingProcess()
 {
-	level_editor_->LevelEdit();
+	if (edit_mode == false)
+	{
+		if (editting_level_)
+		{
+			delete editting_level_;
+			editting_level_ = nullptr;
+		}
+		return false;
+	}
+
+	if (editting_level_ == nullptr)
+	{
+		editting_level_ = new LevelEditor;
+
+		if (saved_level_)
+		{
+			// Copy From saved Level
+			editting_level_->CopyFromSavedLevel(saved_level_);
+
+			delete saved_level_;
+			saved_level_ = nullptr;
+		}
+		else
+		{
+			// create basic level
+			bool created = editting_level_->CreateLevel(3, 12, 12, { 16 , 16 });
+			editting_level_->vs_id_ = "LevelEditorVS.cso";
+			editting_level_->ps_id_ = "LevelEditorPS.cso";
+			editting_level_->gs_id_ = "LevelEditorGS.cso";
+			editting_level_->texture_id = { "WhiteTile.png" };
+			editting_level_->CreateEditSOStage();
+		}
+	}
+
+	// Updates aobut edittings
+	{
+		PICKING->Frame();  
+		editting_level_->Update();
+		editting_level_->SetEditSOStage();
+	}
+
+	// Render editting level
+	{
+		editting_level_->Render(false);
+	}
+
+	// Edit process
+	{
+		editting_level_->LevelEdit();
+	}
+
+	return true;
 }
 
-void MapTool::LoadResource()
+bool MapTool::SavedLevelRenderProcess()
 {
-	RESOURCE->Init("../../Contents/");
+	if (edit_mode)
+	{
+		if (saved_level_)
+		{
+			QUADTREE->Release();
+		}
+		return false;
+	}
+
+	if (saved_level_ == nullptr)
+	{
+		// Import Saved Level
+		saved_level_ = new Level;
+		bool imported = saved_level_->ImportFromFile(current_saved_file);
+		editting_level_->vs_id_ = "LevelVS.cso";
+		editting_level_->ps_id_ = "LevelPS.cso";
+
+		QUADTREE->Init(saved_level_);
+	}
+
+	// Updates
+	{
+		QUADTREE->Frame(&sys_camera);
+	}
+
+	// Rendering
+	{
+		QUADTREE->Render();
+	}
+
+	return true;
 }
+

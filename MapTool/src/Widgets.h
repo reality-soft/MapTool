@@ -12,6 +12,7 @@ enum class MsgType
 	OW_LEVEL_EDITOR,
 	OW_RES_VIEWER,
 	OW_INSTANCED_FOLIAGE,
+	OPT_WIREFRAME,
 };
 
 class GwMainMenu : public KGCA41B::GuiWidget
@@ -51,7 +52,6 @@ class GwPorperty : public KGCA41B::GuiWidget
 {
 public:
 	XMMATRIX world_transform_;
-
 	string mouse_pos_text;
 public:
 	virtual void Update() override;

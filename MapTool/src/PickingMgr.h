@@ -5,7 +5,7 @@
 class PickingMgr
 {
 	SINGLETON(PickingMgr);
-#define PICKING PickingMgr::GetInst()
+#define PICKING PickingMgr::GetInst()  
 public:
 	void Init(KGCA41B::CameraSystem* _camera);
 	void Frame();
@@ -14,6 +14,6 @@ public:
 	XMVECTOR current_point;
 	CollisionBody* current_body = nullptr;
 private:
-	shared_ptr<KGCA41B::CameraSystem> camera;
+	KGCA41B::CameraSystem* camera = nullptr;
 };
 

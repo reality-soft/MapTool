@@ -20,7 +20,7 @@ public:
 	~LevelInstanced();
 
 public:
-	void Init(string mesh_id, string vs_id, string ps_id);
+	void Init(string mesh_id, string vs_id);
 	void Frame();
 	void Render();
 	void Release();
@@ -32,10 +32,8 @@ public:
 	void AddNewInstance(XMMATRIX& transform);
 	void TransformationInstance(UINT index, XMVECTOR& transform);
 public:
-	shared_ptr<StaticMesh> mesh;
+	shared_ptr<StaticMesh> static_mesh;
 	shared_ptr<VertexShader> vs;
-	shared_ptr<PixelShader> ps;
-	Surface surface;
 	UINT instance_count = 0;
 	map<UINT, XMMATRIX> instancing_map;
 

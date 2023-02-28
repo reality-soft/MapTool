@@ -22,15 +22,15 @@ void GS(triangle VS_OUT input[3], inout TriangleStream<GS_IN> stream)
 		gs_stream.o = input[i].o;
 		gs_stream.c = input[i].c;
 		gs_stream.t = input[i].t;
-
+        gs_stream.lod = input[i].lod;
+		
 		if (input[i].strength > 0)
 		{
 			gs_stream.p.y += input[i].strength * altitude.x;
 			gs_stream.o.y += input[i].strength * altitude.x;
 		}
 		
-        gs_stream.p = mul(gs_stream.p, IdentityMatrix());
-        gs_stream.p = mul(gs_stream.p, input[i].mat_viewproj);
+        gs_stream.p = mul(gs_stream.p, input[i].view_proj);
 		
 		stream.Append(gs_stream);
 	}

@@ -11,7 +11,7 @@ void ResourceSelector::Active()
     }
     else
     {
-        NOT(GUI->FindWidget(GWNAME(*this))->open_);
+        NOT(GUI->FindWidget(GWNAME(*this))->open_);  
     }
 }
 

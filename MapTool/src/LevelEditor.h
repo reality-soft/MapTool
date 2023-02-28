@@ -4,6 +4,49 @@
 
 using namespace KGCA41B;
 
+struct StreamVertex
+{
+	XMFLOAT4 p;
+	XMFLOAT3 o;
+	XMFLOAT3 n;
+	XMFLOAT4 c;
+	XMFLOAT2 t;
+};
+
+struct CbHitCircle
+{
+	CbHitCircle() = default;
+	CbHitCircle(const CbHitCircle& other)
+	{
+		data = other.data;
+		other.buffer.CopyTo(buffer.GetAddressOf());
+	}
+	struct Data
+	{
+		bool is_hit = false;
+		float circle_radius = 0.0f;
+		XMVECTOR hitpoint = { 0, 0, 0, 0 };
+	} data;
+
+	ComPtr<ID3D11Buffer> buffer;
+};
+
+struct CbEditOption
+{
+	CbEditOption() = default;
+	CbEditOption(const CbEditOption& other)
+	{
+		data = other.data;
+		other.buffer.CopyTo(buffer.GetAddressOf());
+	}
+	struct Data
+	{
+		XMINT4 altitude = { 0, 0, 0, 0 };
+
+	} data;
+	ComPtr<ID3D11Buffer> buffer;
+};
+
 class LevelEditor : public Level
 {
 public:
@@ -12,6 +55,7 @@ public:
 
 public:
 	bool ExportToFile(string filename);
+	bool CopyFromSavedLevel(Level* saved_level);
 
 	// Edit-SO-Stage	
 	bool CreateEditSOStage();
@@ -25,11 +69,10 @@ public:
 
 	// Physics
 	void LevelEdit();
-	void Regenerate(UINT num_row, UINT num_col, int cell_distance, int uv_scale);
 	void ResetHeightField();
 
 	// Edit Options
-	float sculpting_brush_ = 100.0f;
+	float sculpting_brush_ = 10.0f;
 
 	// Default Export Directory
 	string export_dir = "../../Contents/BinaryPackage/";
