@@ -214,6 +214,16 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\SkySpherePS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\SkySphereVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\StaticMeshVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>

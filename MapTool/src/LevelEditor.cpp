@@ -144,6 +144,9 @@ void LevelEditor::GetEditSOStage()
 
 void LevelEditor::LevelEdit()
 {
+	if (PICKING->current_body == nullptr)
+		return;
+
 	if (PICKING->current_body == height_field_body_)
 	{
 		hit_circle_.data.hitpoint = PICKING->current_point;

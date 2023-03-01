@@ -25,6 +25,7 @@ public:
 
 	LevelEditor* editting_level_ = nullptr;
 	Level* saved_level_ = nullptr;
+	SkySphere sphere;
 
 public:
 	GwMainMenu gw_main_menu_;

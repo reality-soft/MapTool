@@ -7,7 +7,7 @@ struct PS_OUT
     float4 c : COLOR;
     float2 t : TEXCOORD;
     float lod : TEXCOORD1;
-};
+};  
 
 Texture2D textures[7] : register(t0);
 SamplerState samper_state : register(s0);

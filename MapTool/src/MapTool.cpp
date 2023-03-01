@@ -6,8 +6,8 @@ using namespace KGCA41B;
 
 void MapTool::OnInit()
 {
-	RESOURCE->Init("../../Contents/");
-	
+	RESOURCE->Init("../../Contents/");  
+
 	ComponentSystem::GetInst()->OnInit(reg_scene);
 
 	sys_light.OnCreate(reg_scene);  
@@ -21,6 +21,8 @@ void MapTool::OnInit()
 	PICKING->Init(&sys_camera);
 	//instanced_foliage_.Init(level_editor_, reg_scene);
 	res_selector_.Init();
+
+	sphere.CreateSphere();
 
 }
 
@@ -44,7 +46,7 @@ void MapTool::OnUpdate()
 		if (GUI->FindWidget(GWNAME(gw_level_editor_)) == nullptr)
 		{
 			//gw_level_editor_.editing_level = this->level_editor_;
-			GUI->AddWidget(GWNAME(gw_level_editor_), &gw_level_editor_);
+			GUI->AddWidget(GWNAME(gw_level_editor_), &gw_level_editor_);  
 		}
 		else
 		{
@@ -66,6 +68,8 @@ void MapTool::OnRender()
 
 	SavedLevelRenderProcess();
 
+	sphere.FrameRender(sys_camera.GetCamera());
+
 	//GUI
 	GUI->RenderWidgets();
 }
@@ -74,7 +78,7 @@ void MapTool::OnRelease()
 {
 	if (editting_level_)
 	{
-		editting_level_->ExportToFile(current_saved_file);
+		//editting_level_->ExportToFile(current_saved_file);
 		delete editting_level_;
 		editting_level_ = nullptr;
 	}
