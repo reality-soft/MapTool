@@ -1,8 +1,8 @@
-#include "InstancedFoliage.h"
+#include "EditorTool.h"
 #include "Widgets.h"
 #include "PickingMgr.h"
 
-void InstancedFoliage::Active()
+void EditorTool::Active()
 {
 	if (GUI->FindWidget(GWNAME(*this)) == nullptr)
 	{
@@ -14,23 +14,23 @@ void InstancedFoliage::Active()
 	}
 }
 	
-void InstancedFoliage::Init(LevelEditor* editing_level, entt::registry& reg)
+void EditorTool::Init(LevelEditor* editing_level, entt::registry& reg)
 {
 	this->editing_level = editing_level;
 	this->reg = &reg;
 }
 
-void InstancedFoliage::Release()
+void EditorTool::Release()
 {
 
 }
 
-void InstancedFoliage::Update()
+void EditorTool::Update()
 {
 	if (current_foliage != nullptr)
 	{
 		current_foliage->TransformationInstance(0, PICKING->current_point);
-		if (DINPUT->GetMouseButton().x)
+		if (DINPUT->GetMouseState(L_BUTTON) == KEY_PUSH)
 		{
 			current_foliage->AddNewInstance(XMMatrixTranslationFromVector(PICKING->current_point));
 		}
@@ -40,7 +40,7 @@ void InstancedFoliage::Update()
 	}
 }
 
-void InstancedFoliage::Render()
+void EditorTool::Render()
 {
 	if (this->open_ == false)
 		return;
@@ -61,20 +61,6 @@ void InstancedFoliage::Render()
 		}
 		ImGui::Separator();
 
-		ImGui::Text("Material");
-		ImGui::InputText("Texture ResID", tex_id, 128);
-		if (ImGui::BeginDragDropTarget())
-		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("RESOURCE");
-			if (payload != nullptr)
-			{
-				char* resid = (char*)payload->Data;
-				strcpy(tex_id, resid);
-			}
-			ImGui::EndDragDropTarget();
-		}
-		ImGui::Separator();
-
 		static string result_msg;
 		static bool is_generated = true;
 		if (ImGui::Button("Grnerate"))
@@ -84,12 +70,6 @@ void InstancedFoliage::Render()
 				result_msg = "There's No Resource among Meshes : " + string(mesh_id);
 				is_generated = false;
 				ZeroMemory(mesh_id, ARRAYSIZE(mesh_id));
-			}
-			else if (RESOURCE->UseResource<Texture>(tex_id) == nullptr)
-			{
-				result_msg = "There's No Resource among Textures : " + string(tex_id);
-				is_generated = false;
-				ZeroMemory(tex_id, ARRAYSIZE(tex_id));
 			}
 			else
 			{
@@ -105,8 +85,7 @@ void InstancedFoliage::Render()
 					current_foliage = nullptr;
 				}
 				current_foliage = new LevelInstanced;
-				current_foliage->Init(mesh_id, "InstancingVS.cso", "SurfacePS.cso");
-				current_foliage->CreateSurfaceMaterial({ tex_id });
+				current_foliage->Init(mesh_id, "InstancingVS.cso");
 				current_foliage->AddNewInstance(XMMatrixTranslationFromVector(PICKING->current_point));
 			}
 		}

@@ -3,7 +3,10 @@
 // GS cbuffer
 cbuffer edit_option : register(b0)
 {
-	int4 altitude;
+	int altitude;
+    int tex_layer;
+    int temp1;
+    int temp2;
 }
 
 
@@ -20,17 +23,21 @@ void GS(triangle VS_OUT input[3], inout TriangleStream<GS_IN> stream)
         gs_stream.p = input[i].p;
 		gs_stream.n = normalize(cross(edge1, edge2));
 		gs_stream.o = input[i].o;
-		gs_stream.c = input[i].c;
+        gs_stream.c = input[i].c;
 		gs_stream.t = input[i].t;
+        gs_stream.lod = input[i].lod;
+        gs_stream.strength = input[i].strength;
 
 		if (input[i].strength > 0)
 		{
-			gs_stream.p.y += input[i].strength * altitude.x;
-			gs_stream.o.y += input[i].strength * altitude.x;
-		}
+			gs_stream.p.y += input[i].strength * altitude;
+			gs_stream.o.y += input[i].strength * altitude;
+            gs_stream.c.w = tex_layer + min(0.9, input[i].strength);
+
+        }
+
 		
-        gs_stream.p = mul(gs_stream.p, IdentityMatrix());
-        gs_stream.p = mul(gs_stream.p, input[i].mat_viewproj);
+        gs_stream.p = mul(gs_stream.p, input[i].view_proj);
 		
 		stream.Append(gs_stream);
 	}

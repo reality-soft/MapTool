@@ -14,8 +14,8 @@ struct VS_OUT
 	float4 c : COLOR;
     float2 t : TEXCOORD0;
 	float1 strength : TEXCOORD1;
-	float4 circle : TEXCOORD2;
-    matrix mat_viewproj : TEXCOORD3;
+    matrix view_proj : TEXCOORD2;
+    float lod : COLOR1;
 };
 
 struct GS_IN
@@ -25,16 +25,6 @@ struct GS_IN
 	float3 n : NORMAL;
 	float4 c : COLOR;
 	float2 t : TEXCOORD;
+    float1 strength : TEXCOORD1;
+    float lod : COLOR1;
 };
-
-float4x4 IdentityMatrix()
-{
-    return float4x4(
-        1.0, 0.0, 0.0, 0.0,
-        0.0, 1.0, 0.0, 0.0,
-        0.0, 0.0, 1.0, 0.0,
-        0.0, 0.0, 0.0, 1.0
-    );
-	
-}
-

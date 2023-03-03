@@ -1,12 +1,19 @@
-#include "include/LevelHeader.hlsli"
 #include "include/PixelCommon.hlsli"
 
+struct PS_OUT
+{
+    float4 p : SV_POSITION;
+    float4 n : NORMAL;
+    float4 c : COLOR;
+    float2 t : TEXCOORD;
+    float lod : TEXCOORD1;  
+};
 
-Texture2D    textures[16]		: register(t0);
-SamplerState samplers		: register(s0);
+Texture2D textures[16] : register(t0);
+SamplerState samplers : register(s0);
 
-float4 PS(GS_IN output) : SV_Target
-{    
+float4 PS(PS_OUT output) : SV_Target
+{
     float4 tex_layer[16];
     for (int i = 0; i < 16; ++i)
     {
@@ -23,7 +30,7 @@ float4 PS(GS_IN output) : SV_Target
     
     if ((int) output.c.w > 0)
     {
-        float strength = output.c.w - (float) layer_index;
+        float strength = output.c.w - (float)layer_index;
 
         if (strength > 0)
         {
@@ -35,7 +42,7 @@ float4 PS(GS_IN output) : SV_Target
 
     
     float bright = max(0.2f, dot(output.n, -direction));
-    float4 light_color = float4(bright, bright, bright, 1) * color;  
+    float4 light_color = float4(bright, bright, bright, 1) * color;
 
     return base_color * light_color * float4(output.c.xyz, 1);
 }

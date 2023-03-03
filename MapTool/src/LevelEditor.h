@@ -4,6 +4,59 @@
 
 using namespace KGCA41B;
 
+enum BrushType
+{
+	Sculpting,
+	Texturing,
+	Selecting
+};
+
+struct StreamVertex
+{
+	XMFLOAT4 p;
+	XMFLOAT3 o;
+	XMFLOAT3 n;
+	XMFLOAT4 c;
+	XMFLOAT2 t;
+};
+
+struct CbHitCircle
+{
+	CbHitCircle() = default;
+	CbHitCircle(const CbHitCircle& other)
+	{
+		data = other.data;
+		other.buffer.CopyTo(buffer.GetAddressOf());
+	}
+	struct Data
+	{
+		bool is_hit = false;
+		float circle_radius = 0.0f;
+		XMVECTOR hitpoint = { 0, 0, 0, 0 };
+	} data;
+
+	ComPtr<ID3D11Buffer> buffer;
+};
+
+struct CbEditOption
+{
+	CbEditOption() = default;
+	CbEditOption(const CbEditOption& other)
+	{
+		data = other.data;
+		other.buffer.CopyTo(buffer.GetAddressOf());
+	}
+	struct Data
+	{
+		int altitude = 0;
+		int tex_layer = 0;
+		int temp1 = 0;
+		int temp2 = 0;
+
+	} data;
+	ComPtr<ID3D11Buffer> buffer;
+};
+
 class LevelEditor : public Level
 {
 public:
@@ -11,7 +64,8 @@ public:
 	~LevelEditor() {}
 
 public:
-	bool ExportToFile(string filename);
+	string ExportToFile(string filename);
+	bool CopyFromSavedLevel(Level* saved_level);
 
 	// Edit-SO-Stage	
 	bool CreateEditSOStage();
@@ -23,13 +77,14 @@ public:
 	CbHitCircle hit_circle_;
 	CbEditOption edit_option_;
 
+	BrushType brush_type = Sculpting;
+	float brush_scale = 10.0f;
+	int current_layer = 0;
 	// Physics
 	void LevelEdit();
-	void Regenerate(UINT num_row, UINT num_col, int cell_distance, int uv_scale);
 	void ResetHeightField();
 
 	// Edit Options
-	float sculpting_brush_ = 100.0f;
 
 	// Default Export Directory
 	string export_dir = "../../Contents/BinaryPackage/";
