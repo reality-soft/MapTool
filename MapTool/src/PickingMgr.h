@@ -9,10 +9,10 @@ class PickingMgr
 public:
 	void Init(KGCA41B::CameraSystem* _camera);
 	void Frame();
-	void Render();
-	void Release();
+	void Release();  
 	XMVECTOR current_point;
 	CollisionBody* current_body = nullptr;
+
 private:
 	KGCA41B::CameraSystem* camera = nullptr;
 };

@@ -1,9 +1,8 @@
 #pragma once
 #include "Widgets.h"
 #include "LevelEditor.h"
-#include "InstancedFoliage.h"
+#include "EditorTool.h"
 #include "ResourceSelector.h"
-#include "Object/LevelInstanced.h"
 
 class MapTool : public KGCA41B::Scene
 {
@@ -21,6 +20,8 @@ public:
 	bool SavedLevelRenderProcess();
 
 	bool edit_mode = true;
+	bool wire_frame = false;
+
 	string current_saved_file;
 
 	LevelEditor* editting_level_ = nullptr;
@@ -37,9 +38,6 @@ private:
 
 	KGCA41B::LightingSystem sys_light;
 	KGCA41B::CameraSystem sys_camera;
-
-
-	InstancedFoliage instanced_foliage_;
 	ResourceSelector res_selector_;
 };
 

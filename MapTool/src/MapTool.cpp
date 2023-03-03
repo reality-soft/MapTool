@@ -45,30 +45,39 @@ void MapTool::OnUpdate()
 	{
 		if (GUI->FindWidget(GWNAME(gw_level_editor_)) == nullptr)
 		{
-			//gw_level_editor_.editing_level = this->level_editor_;
+			gw_level_editor_.editing_level = this->editting_level_;
 			GUI->AddWidget(GWNAME(gw_level_editor_), &gw_level_editor_);  
+			edit_mode = true;
 		}
 		else
 		{
 			NOT(GUI->FindWidget(GWNAME(gw_level_editor_))->open_);
 		}
 	} break;
-	case MsgType::OW_INSTANCED_FOLIAGE:
-	{
-		instanced_foliage_.Active();
-	}
 	case MsgType::OPT_WIREFRAME:
-		NOT(QUADTREE->wire_frame);
+		NOT(wire_frame);
 	}
 }
 
 void MapTool::OnRender()
 {   
-	LevelEdittingProcess();
+	if (wire_frame)
+		DX11APP->SetWireframes();
 
-	SavedLevelRenderProcess();
+	else
+		DX11APP->SetSolid();
 
-	sphere.FrameRender(sys_camera.GetCamera());
+	if (gw_level_editor_.loaded_level)
+	{
+		this->saved_level_ = gw_level_editor_.loaded_level;
+		edit_mode = false;
+		SavedLevelRenderProcess();
+	}
+
+	else
+		LevelEdittingProcess();
+
+
 
 	//GUI
 	GUI->RenderWidgets();
@@ -78,7 +87,6 @@ void MapTool::OnRelease()
 {
 	if (editting_level_)
 	{
-		//editting_level_->ExportToFile(current_saved_file);
 		delete editting_level_;
 		editting_level_ = nullptr;
 	}
@@ -114,18 +122,20 @@ bool MapTool::LevelEdittingProcess()
 		{
 			// Copy From saved Level
 			editting_level_->CopyFromSavedLevel(saved_level_);
-
+			editting_level_->SetCamera(sys_camera.GetCamera());
 			delete saved_level_;
 			saved_level_ = nullptr;
 		}
-		else
+		else  
 		{
-			// create basic level
+			// create basic level  
 			bool created = editting_level_->CreateLevel(3, 12, 12, { 16 , 16 });
+			editting_level_->SetCamera(sys_camera.GetCamera());
 			editting_level_->vs_id_ = "LevelEditorVS.cso";
 			editting_level_->ps_id_ = "LevelEditorPS.cso";
 			editting_level_->gs_id_ = "LevelEditorGS.cso";
 			editting_level_->texture_id = { "WhiteTile.png" };
+
 			editting_level_->CreateEditSOStage();
 		}
 	}
@@ -137,14 +147,9 @@ bool MapTool::LevelEdittingProcess()
 		editting_level_->SetEditSOStage();
 	}
 
-	// Render editting level
+	// Render editting level  
 	{
 		editting_level_->Render(false);
-	}
-
-	// Edit process
-	{
-		editting_level_->LevelEdit();
 	}
 
 	return true;
@@ -161,16 +166,7 @@ bool MapTool::SavedLevelRenderProcess()
 		return false;
 	}
 
-	if (saved_level_ == nullptr)
-	{
-		// Import Saved Level
-		saved_level_ = new Level;
-		bool imported = saved_level_->ImportFromFile(current_saved_file);
-		editting_level_->vs_id_ = "LevelVS.cso";
-		editting_level_->ps_id_ = "LevelPS.cso";
-
-		QUADTREE->Init(saved_level_);
-	}
+	saved_level_->SetCamera(sys_camera.GetCamera());
 
 	// Updates
 	{

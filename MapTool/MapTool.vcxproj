@@ -160,19 +160,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\InstancedFoliage.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
-    <ClInclude Include="src\Object\LevelInstanced.h" />
     <ClInclude Include="src\PickingMgr.h" />
     <ClInclude Include="src\ResourceSelector.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\InstancedFoliage.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
-    <ClCompile Include="src\Object\LevelInstanced.cpp" />
     <ClCompile Include="src\PickingMgr.cpp" />
     <ClCompile Include="src\ResourceSelector.cpp" />
     <ClCompile Include="src\Widgets.cpp" />

@@ -4,6 +4,13 @@
 
 using namespace KGCA41B;
 
+enum BrushType
+{
+	Sculpting,
+	Texturing,
+	Selecting
+};
+
 struct StreamVertex
 {
 	XMFLOAT4 p;
@@ -41,7 +48,10 @@ struct CbEditOption
 	}
 	struct Data
 	{
-		XMINT4 altitude = { 0, 0, 0, 0 };
+		int altitude = 0;
+		int tex_layer = 0;
+		int temp1 = 0;
+		int temp2 = 0;
 
 	} data;
 	ComPtr<ID3D11Buffer> buffer;
@@ -54,7 +64,7 @@ public:
 	~LevelEditor() {}
 
 public:
-	bool ExportToFile(string filename);
+	string ExportToFile(string filename);
 	bool CopyFromSavedLevel(Level* saved_level);
 
 	// Edit-SO-Stage	
@@ -67,12 +77,14 @@ public:
 	CbHitCircle hit_circle_;
 	CbEditOption edit_option_;
 
+	BrushType brush_type = Sculpting;
+	float brush_scale = 10.0f;
+	int current_layer = 0;
 	// Physics
 	void LevelEdit();
 	void ResetHeightField();
 
 	// Edit Options
-	float sculpting_brush_ = 10.0f;
 
 	// Default Export Directory
 	string export_dir = "../../Contents/BinaryPackage/";

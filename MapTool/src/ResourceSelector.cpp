@@ -17,7 +17,7 @@ void ResourceSelector::Active()
 
 void ResourceSelector::Init()
 {
-    res_id_map = KGCA41B::RESOURCE->GetTotalResID();
+    res_id_map = KGCA41B::RESOURCE->GetTotalResID(); 
 }
 
 void ResourceSelector::Release()
@@ -86,6 +86,18 @@ void ResourceSelector::Render()
     }
     ImGui::EndListBox();
     ImGui::PopStyleColor();
+
+    ImGuiWindow* window = ImGui::GetCurrentWindow();
+    ImRect rect = window->Rect();
+
+    if (ImGui::IsMouseHoveringRect(rect.Min, rect.Max))
+    {
+        DINPUT->Active(false);
+    }
+    else
+    {
+        DINPUT->Active(true);
+    }
 
     ImGui::End();
 }

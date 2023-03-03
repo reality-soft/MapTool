@@ -55,6 +55,7 @@ project "MapTool"
 	links
 	{
 		"Engine",
+		"DirectXTK_D",
 		"libfbxsdk-md",
 		"libxml2-md",
 		"zlib-md",
