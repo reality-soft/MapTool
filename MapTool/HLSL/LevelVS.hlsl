@@ -30,7 +30,8 @@ VS_OUT VS(VS_IN input)
     output.lod = GetLod(input.p);
     output.p = projection;
     output.n = normal;
-    output.c = input.c;
+    output.c.xyz = float3(1, 1, 1);
+    output.c.w = input.c.w;
     output.t = input.t;
 
     return output;

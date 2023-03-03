@@ -19,7 +19,7 @@ cbuffer cb_time : register(b1)
 Texture2D textures : register(t0);
 SamplerState sample : register(s0);
 
-float4 PS(PS_OUT output) : SV_Target
+float4 PS(PS_OUT output) : SV_Target  
 {  
     float4 texcolor = textures.SampleLevel(sample, output.t, 0); //CreateColor(textures, sample, output.t);
     

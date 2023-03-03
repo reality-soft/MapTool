@@ -25,5 +25,6 @@ struct GS_IN
 	float3 n : NORMAL;
 	float4 c : COLOR;
 	float2 t : TEXCOORD;
+    float1 strength : TEXCOORD1;
     float lod : COLOR1;
 };

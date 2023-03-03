@@ -9,7 +9,7 @@ cbuffer cb_hitcircle : register(b1)
 	float4 circle_color;
 }
 
-VS_OUT VS(VS_IN input)
+VS_OUT VS(VS_IN input)  
 {
 	VS_OUT output = (VS_OUT)0;
 	
@@ -35,7 +35,8 @@ VS_OUT VS(VS_IN input)
     output.p = local;
 	output.o = input.p;
 	output.n = input.n;
-    output.c = input.c * edit_circle;
+    output.c.xyz = edit_circle.xyz;
+    output.c.w = input.c.w;
 	output.t = input.t;
 
 	return output;

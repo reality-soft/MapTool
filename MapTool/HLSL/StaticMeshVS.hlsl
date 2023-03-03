@@ -12,7 +12,7 @@ struct VS_IN
 	float4 c : F4_COLOR;
 	float2 t : F2_TEXTURE;
 };
-struct VS_OUT  
+struct VS_OUT
 {
 	float4 p : SV_POSITION;
 	float4 n : NORMAL;
