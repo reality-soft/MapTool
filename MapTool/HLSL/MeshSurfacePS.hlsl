@@ -5,12 +5,12 @@ struct PS_OUT
     float4 p : SV_POSITION;  
     float4 n : NORMAL;
     float4 c : COLOR;
-    float2 t : TEXCOORD;
+    float2 t : TEXCOORD;  
     float lod : TEXCOORD1;
 };  
 
 Texture2D textures[7] : register(t0);
-SamplerState samper_state : register(s0);
+SamplerState samper_state : register(s0);  
 
 float4 PS(PS_OUT output) : SV_Target
 {  

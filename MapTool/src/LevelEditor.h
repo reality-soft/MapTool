@@ -2,7 +2,7 @@
 #include "Engine_include.h"
 #include "FileTransfer.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 enum BrushType
 {
@@ -18,6 +18,7 @@ struct StreamVertex
 	XMFLOAT3 n;
 	XMFLOAT4 c;
 	XMFLOAT2 t;
+	XMFLOAT2 t_layer;
 };
 
 struct CbHitCircle
@@ -79,11 +80,11 @@ public:
 
 	BrushType brush_type = Sculpting;
 	float brush_scale = 10.0f;
+	bool paint_on = true;
 	int current_layer = 0;
 	// Physics
 	void LevelEdit();
 	void ResetHeightField();
-
 	// Edit Options
 
 	// Default Export Directory

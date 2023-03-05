@@ -1,7 +1,7 @@
 #include "Widgets.h"
 #include "PickingMgr.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 void GwMainMenu::Update()
 {
@@ -139,35 +139,16 @@ void GwLevelEditor::CwEditTerrain()
 
         ImGui::Text("Texture Layer");
         {
-            if (ImGui::BeginListBox("##"))
-            {
-                int index = 0;
-                for (auto texid : editing_level->texture_id)
-                {
-                    if (ImGui::Selectable(texid.c_str()))
-                    {
-                        strcpy(tex_id_buffer, texid.c_str());
-                        editing_level->current_layer = index;
-                    }
-                    index++;
-                }
-
-                ImGui::EndListBox();
-            }
+            // Base Texture Selection
 
             ImTextureID texid = nullptr;
-            auto texture = RESOURCE->UseResource<Texture>(tex_id_buffer);
+            auto texture = RESOURCE->UseResource<Texture>(editing_level->texture_id[0]);
             if (texture)
             {
                 texid = (ImTextureID)texture->srv.Get();
+                ImGui::Image(texid, ImVec2(100, 100));
             }
-            else
-            {
-                strcpy(tex_id_buffer, editing_level->texture_id[0].c_str());
-            }
-
-            ImGui::Image(texid, ImVec2(100, 100));            
-            ImGui::InputText("Texture ID", tex_id_buffer, 255);
+            ImGui::InputText("Base Texture", editing_level->texture_id[0].data(), editing_level->texture_id[0].size());
             if (ImGui::BeginDragDropTarget())
             {
                 const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("RESOURCE");
@@ -175,13 +156,74 @@ void GwLevelEditor::CwEditTerrain()
                 {
                     char* resid = (char*)payload->Data;
                     strcpy(tex_id_buffer, resid);
+
+                    auto texture = RESOURCE->UseResource<Texture>(string(tex_id_buffer));
+                    if (texture)
+                    {
+                        editing_level->texture_id[0] = string(tex_id_buffer);
+                    }
                 }
                 ImGui::EndDragDropTarget();
             }
-            if (ImGui::Button("Add Texture Layer"))
+
+            // Tex Layers Selection
+            if (ImGui::BeginTabBar("Layer Texture 0"))
             {
-                editing_level->texture_id.push_back(tex_id_buffer);
-                editing_level->SetTexturesToLayer();
+                if (ImGui::BeginTabItem("Channel R")) {
+                    static string tex_id;
+                    Texture* texture = DragDropImage(tex_id);
+                    if (texture)
+                    {
+                        editing_level->texture_id[1] = tex_id;
+                    }
+
+                    editing_level->current_layer = 1;
+                    ImGui::EndTabItem();  
+                }
+                if (ImGui::BeginTabItem("Channel G")) {
+                    static string tex_id;
+                    Texture* texture = DragDropImage(tex_id);
+                    if (texture)
+                    {
+                        editing_level->texture_id[2] = tex_id;
+                    }
+
+                    editing_level->current_layer = 2;
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Channel B")) {
+                    static string tex_id;
+                    Texture* texture = DragDropImage(tex_id);
+                    if (texture)
+                    {
+                        editing_level->texture_id[3] = tex_id;
+                    }
+
+                    editing_level->current_layer = 3;
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Channel A")) {
+                    static string tex_id;
+                    Texture* texture = DragDropImage(tex_id);
+                    if (texture)
+                    {
+                        editing_level->texture_id[4] = tex_id;
+                    }
+
+                    editing_level->current_layer = 4;
+                    ImGui::EndTabItem();
+                }
+
+                ImGui::EndTabBar();  
+            }
+
+            if (ImGui::RadioButton("Paint", editing_level->paint_on))
+            {
+                editing_level->paint_on = true;
+            }
+            if (ImGui::RadioButton("Erase", !editing_level->paint_on))
+            {
+                editing_level->paint_on = false;
             }
 
         } ImGui::Separator(); ImGui::Spacing();
@@ -271,4 +313,35 @@ void GwLevelEditor::CwObjectControl()
         }
     }
     ImGui::End();
+}
+
+Texture* GwLevelEditor::DragDropImage(string& name)
+{
+    Texture* texture = nullptr;
+    ImTextureID im_texid = nullptr;
+
+    texture = RESOURCE->UseResource<Texture>(name);
+    if (texture)
+        im_texid = (ImTextureID)texture->srv.Get();
+
+    ImGui::Image(im_texid, ImVec2(100, 100));
+    if (ImGui::BeginDragDropTarget())
+    {
+        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("RESOURCE");
+        if (payload != nullptr)
+        {
+            char* resid = (char*)payload->Data;
+            name = string(resid);
+            texture = RESOURCE->UseResource<Texture>(name);
+            if (texture)
+            {
+                im_texid = (ImTextureID)texture->srv.Get();
+            }
+        }
+        ImGui::EndDragDropTarget();
+    }
+
+    ImGui::Text(name.c_str());
+
+    return texture;
 }

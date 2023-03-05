@@ -16,7 +16,7 @@ string LevelEditor::ExportToFile(string filepath)
 	file_transfer.WriteBinary<XMINT2>(&row_col_blocks_, 1);
 
 	// Arrays
-	file_transfer.WriteBinary<Vertex>(level_mesh_.vertices.data(), level_mesh_.vertices.size());
+	file_transfer.WriteBinary<LevelVertex>(level_mesh_.vertices.data(), level_mesh_.vertices.size());
 	file_transfer.WriteBinary<UINT>(level_mesh_.indices.data(), level_mesh_.indices.size());
 	file_transfer.WriteBinary<string>(texture_id.data(), texture_id.size());
 
@@ -115,7 +115,7 @@ bool LevelEditor::CreateEditSOStage()
 	if (FAILED(hr))
 		return false;
 }
-
+  
 void LevelEditor::SetEditSOStage()
 {
 	// Set VS Cb : HitCircle
@@ -150,7 +150,6 @@ void LevelEditor::GetEditSOStage()
 		{
 			level_mesh_.vertices[level_mesh_.indices[i]].p = vertices[i].o;
 			level_mesh_.vertices[level_mesh_.indices[i]].n = vertices[i].n;
-			level_mesh_.vertices[level_mesh_.indices[i]].c = vertices[i].c;
 		}
 	}
 	DX11APP->GetDeviceContext()->Unmap(temp_buffer, 0);
@@ -182,22 +181,22 @@ void LevelEditor::LevelEdit()
 			DX11APP->GetDeviceContext()->UpdateSubresource(edit_option_.buffer.Get(), 0, nullptr, &edit_option_.data, 0, 0);
 		}
 
-		if (DINPUT->GetMouseState(L_BUTTON))
-		{
-			GetEditSOStage();
+		if (DINPUT->GetMouseState(L_BUTTON) == KEY_PUSH)
+		{  
+			GetEditSOStage();  
 		}
 	}
 
 	if (brush_type == Texturing)
 	{
-		edit_option_.data.tex_layer = current_layer;
-		DX11APP->GetDeviceContext()->UpdateSubresource(edit_option_.buffer.Get(), 0, nullptr, &edit_option_.data, 0, 0);
-		if (DINPUT->GetMouseState(L_BUTTON))
-		{
-			GetEditSOStage();
+		if (DINPUT->GetMouseState(L_BUTTON) == KEY_PUSH)
+		{   
+			alpha_layer.SetTexelAt(PICKING->current_point, brush_scale, current_layer, paint_on);
+
+			DX11APP->GetDeviceContext()->UpdateSubresource(alpha_layer.alpha_texture.Get(), 0, 0, alpha_layer.alpha_data.data(), sizeof(XMFLOAT4) * 1024, 0);
 		}
 	}
-
+	   
 	//if (brush_type == Selecting)
 	//{
 	//	for (auto& obj : inst_objects)

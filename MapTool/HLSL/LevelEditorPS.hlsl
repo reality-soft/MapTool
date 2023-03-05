@@ -1,41 +1,28 @@
 #include "include/LevelHeader.hlsli"
 #include "include/PixelCommon.hlsli"
 
-
-Texture2D    textures[16]		: register(t0);
+Texture2D    textures[5]		: register(t0);
+Texture2D    alpha_layer        : register(t5);
 SamplerState samplers		: register(s0);
 
 float4 PS(GS_IN output) : SV_Target
-{    
-    float4 tex_layer[16];
-    for (int i = 0; i < 16; ++i)
-    {
-        float4 color = textures[i].SampleLevel(samplers, output.t, output.lod);
-        
-        if (length(color) <= 0)
-            tex_layer[i] = float4(1, 1, 1, 1);
-        else
-            tex_layer[i] = color;
-    }
+{         
+    float4 base_color = textures[0].SampleLevel(samplers, output.t, output.lod);
+    float4 layer_color = alpha_layer.Sample(samplers, output.layer_texel);
     
-    int layer_index = (int) output.c.w;
-    float4 base_color = tex_layer[layer_index];
+    float4 tex_color1 = textures[1].SampleLevel(samplers, output.t, output.lod);
+    float4 tex_color2 = textures[2].SampleLevel(samplers, output.t, output.lod);
+    float4 tex_color3 = textures[3].SampleLevel(samplers, output.t, output.lod);
+    float4 tex_color4 = textures[4].SampleLevel(samplers, output.t, output.lod);
     
-    if ((int) output.c.w > 0)
-    {
-        float strength = output.c.w - (float) layer_index;
-
-        if (strength > 0)
-        {
-            float4 other_layer1 = tex_layer[(int) output.c.w - 1];
-        
-            base_color = lerp(base_color, other_layer1, 1.0f - strength);
-        }
-    }
-
+    base_color = lerp(base_color, tex_color1, layer_color.r);
+    base_color = lerp(base_color, tex_color2, layer_color.g);
+    base_color = lerp(base_color, tex_color3, layer_color.b);
+    base_color = lerp(base_color, tex_color4, layer_color.a);
+    
     
     float bright = max(0.2f, dot(output.n, -direction));
     float4 light_color = float4(bright, bright, bright, 1) * color;  
 
-    return base_color * light_color * float4(output.c.xyz, 1);
+    return base_color * light_color * float4(output.c.xyz, 1);  
 }

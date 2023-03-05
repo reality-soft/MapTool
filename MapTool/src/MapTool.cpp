@@ -2,7 +2,7 @@
 #include "ComponentSystem.h"
 #include "PickingMgr.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 void MapTool::OnInit()
 {
@@ -134,7 +134,7 @@ bool MapTool::LevelEdittingProcess()
 			editting_level_->vs_id_ = "LevelEditorVS.cso";
 			editting_level_->ps_id_ = "LevelEditorPS.cso";
 			editting_level_->gs_id_ = "LevelEditorGS.cso";
-			editting_level_->texture_id = { "WhiteTile.png" };
+			editting_level_->texture_id[0] = "WhiteTile.png";
 
 			editting_level_->CreateEditSOStage();
 		}
