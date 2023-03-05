@@ -6,6 +6,7 @@ struct VS_IN
     float3 n : F3_NORMAL;
     float4 c : F4_COLOR;
     float2 t : F2_TEXTURE;
+    int2 texel : I2_TEXEL;
 };
 
 struct VS_OUT
@@ -14,6 +15,7 @@ struct VS_OUT
     float4 n : NORMAL;
     float4 c : COLOR;
     float2 t : TEXCOORD;
+    int2 texel : I2_TEXEL;
     float lod : TEXCOORD1;
 };
 

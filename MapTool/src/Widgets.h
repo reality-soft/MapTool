@@ -61,6 +61,7 @@ public:
 	// sculpting
 	char tex_id_buffer[128] = {0,};
 	bool brush_on_ = true;
+	bool paint_on = true;
 	float brush_size_ = 100;
 
 	// Object
@@ -78,6 +79,8 @@ private:
 	void CwSaveLoad();
 	void CwEditTerrain();
 	void CwObjectControl();
+
+	Texture* DragDropImage(string& name);
 };
 
 
