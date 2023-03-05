@@ -2,7 +2,7 @@
 #include "ComponentSystem.h"
 #include "PickingMgr.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 void MapTool::OnInit()
 {

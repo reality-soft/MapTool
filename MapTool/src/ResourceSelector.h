@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine_include.h"
 
-class ResourceSelector : public KGCA41B::GuiWidget
+class ResourceSelector : public reality::GuiWidget
 {
 public:
 	void Active();

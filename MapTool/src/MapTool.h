@@ -4,7 +4,7 @@
 #include "EditorTool.h"
 #include "ResourceSelector.h"
 
-class MapTool : public KGCA41B::Scene
+class MapTool : public reality::Scene
 {
 public:
 	MapTool() {}
@@ -36,8 +36,8 @@ public:
 private:
 	entt::registry reg_scene;
 
-	KGCA41B::LightingSystem sys_light;
-	KGCA41B::CameraSystem sys_camera;
+	reality::LightingSystem sys_light;
+	reality::CameraSystem sys_camera;
 	ResourceSelector res_selector_;
 };
 

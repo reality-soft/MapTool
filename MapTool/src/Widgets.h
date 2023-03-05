@@ -15,7 +15,7 @@
 
 #define GWNAME(gwclass) typeid(gwclass).name()
 #define NOT(a) a = !a
-using namespace KGCA41B;
+using namespace reality;
 
 enum class MsgType
 {
@@ -25,7 +25,7 @@ enum class MsgType
 	OPT_WIREFRAME,
 };
 
-class GwMainMenu : public KGCA41B::GuiWidget
+class GwMainMenu : public reality::GuiWidget
 {
 public:
 	virtual void Update() override;
@@ -35,7 +35,7 @@ public:
 };
 
 
-class GwPorperty : public KGCA41B::GuiWidget
+class GwPorperty : public reality::GuiWidget
 {
 public:
 	XMMATRIX world_transform_;
@@ -45,7 +45,7 @@ public:
 	virtual void Render() override;
 };
 
-class GwLevelEditor : public KGCA41B::GuiWidget
+class GwLevelEditor : public reality::GuiWidget
 {
 public:
 	virtual void Update() override;

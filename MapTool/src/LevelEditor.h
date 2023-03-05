@@ -2,7 +2,7 @@
 #include "Engine_include.h"
 #include "FileTransfer.h"
 
-using namespace KGCA41B;
+using namespace reality;
 
 enum BrushType
 {

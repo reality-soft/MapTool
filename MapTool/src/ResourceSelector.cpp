@@ -17,7 +17,7 @@ void ResourceSelector::Active()
 
 void ResourceSelector::Init()
 {
-    res_id_map = KGCA41B::RESOURCE->GetTotalResID(); 
+    res_id_map = reality::RESOURCE->GetTotalResID(); 
 }
 
 void ResourceSelector::Release()
