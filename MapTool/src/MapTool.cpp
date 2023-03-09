@@ -8,11 +8,11 @@ void MapTool::OnInit()
 {
 	RESOURCE->Init("../../Contents/");  
 
-	//FbxImportOption fbx_option;
-	//fbx_option.import_scale = 1.0f;
-	//fbx_option.import_rotation = {-90.0f, -180.0f, 0.0f, 1.0f};
+	FbxImportOption fbx_option;
+	fbx_option.import_scale = 1.0f;
+	fbx_option.import_rotation = {-90.0f, -180.0f, 0.0f, 1.0f};
 
-	//FbxMgr::GetInst()->ImportAndSaveFbx("../../Contents/FBX/DeadPoly_FullLevel.fbx", fbx_option);
+	FbxMgr::GetInst()->ImportAndSaveFbx("../../Contents/FBX/DeadPoly_FullLevel.fbx", fbx_option);
 
 	ComponentSystem::GetInst()->OnInit(reg_scene);  
 
