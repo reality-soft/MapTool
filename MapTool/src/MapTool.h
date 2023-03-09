@@ -1,8 +1,8 @@
 #pragma once
 #include "Widgets.h"
 #include "LevelEditor.h"
-#include "EditorTool.h"
 #include "ResourceSelector.h"
+#include "LightMeshLevel.h"
 
 class MapTool : public reality::Scene
 {
@@ -24,9 +24,10 @@ public:
 
 	string current_saved_file;
 
+	SkySphere sky_sphere;
+	LightMeshLevel light_mesh_level;
 	LevelEditor* editting_level_ = nullptr;
 	Level* saved_level_ = nullptr;
-	SkySphere sphere;
 
 public:
 	GwMainMenu gw_main_menu_;

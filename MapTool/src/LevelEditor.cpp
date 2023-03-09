@@ -26,7 +26,6 @@ string LevelEditor::ExportToFile(string filepath)
 
 	for (auto& inst : inst_objects)
 	{
-		file_transfer.WriteBinary<InstanceData>(inst.instance_list.data(), inst.instance_list.size());
 		file_transfer.WriteBinary<string>(&inst.mesh_id_, 1);
 		file_transfer.WriteBinary<string>(&inst.vs_id_, 1);
 	}

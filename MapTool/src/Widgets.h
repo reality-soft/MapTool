@@ -38,8 +38,9 @@ public:
 class GwPorperty : public reality::GuiWidget
 {
 public:
-	XMMATRIX world_transform_;
-	string mouse_pos_text;
+	string fps;
+	string gpu_info;
+	string gpu_memory;
 public:
 	virtual void Update() override;
 	virtual void Render() override;

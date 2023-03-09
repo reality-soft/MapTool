@@ -43,7 +43,7 @@ void GwPorperty::Update()
     GetCursorPos(&cursor_pos);
     ScreenToClient(ENGINE->GetWindowHandle(), &cursor_pos);
 
-    mouse_pos_text =  "[FPS] : " + to_string(TM_FPS);
+    fps =  "[FPS] : " + to_string(TM_FPS);
 }
 
 void GwPorperty::Render()
@@ -52,11 +52,8 @@ void GwPorperty::Render()
     {
         ImGui::SetWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
 
-        ImGui::Text(mouse_pos_text.c_str());
-        ImGui::Text("Picking Point");
-        ImGui::Text((to_string(PICKING->current_point.m128_f32[0]).c_str()));
-        ImGui::Text((to_string(PICKING->current_point.m128_f32[1]).c_str()));
-        ImGui::Text((to_string(PICKING->current_point.m128_f32[2]).c_str()));
+        ImGui::Text(fps.c_str());
+
     }
     ImGui::End();
 }
@@ -241,7 +238,8 @@ void GwLevelEditor::CwObjectControl()
             {
                 for (auto& inst_obj : editing_level->inst_objects)  
                 {
-                    if (ImGui::Selectable(inst_obj.object_name.c_str()))
+                    bool selected = ImGui::Selectable(inst_obj.object_name.c_str());
+                    if (selected)
                     {
                         inst_obj.AddNewInstance();
                         selected_instance = inst_obj.selected_instance;
@@ -277,20 +275,20 @@ void GwLevelEditor::CwObjectControl()
         {
             if (selected_instance)  
             {
-                ImGui::Text((selected_instance->GetName() + " : Scale").c_str());
+                ImGui::Text((selected_instance->instance_id + " : Scale").c_str());
  
                 ImGui::DragFloat("Scale XYZ", &selected_instance->S.x, 0.1f);
                 selected_instance->S.y = selected_instance->S.x;
                 selected_instance->S.z = selected_instance->S.x; 
                 ImGui::Spacing();
 
-                ImGui::Text((selected_instance->GetName() + " : Rotation").c_str());
+                ImGui::Text((selected_instance->instance_id + " : Rotation").c_str());
                 ImGui::DragFloat("Rotation X", &selected_instance->R.x, 0.1f);
                 ImGui::DragFloat("Rotation Y", &selected_instance->R.y, 0.1f);
                 ImGui::DragFloat("Rotation Z", &selected_instance->R.z, 0.1f);
                 ImGui::Spacing();
 
-                ImGui::Text((selected_instance->GetName() + " : Transform").c_str());
+                ImGui::Text((selected_instance->instance_id + " : Transform").c_str());
                 ImGui::DragFloat("Transform X", &selected_instance->T.x, 0.1f);
                 ImGui::DragFloat("Transform Y", &selected_instance->T.y, 0.1f);
                 ImGui::DragFloat("Transform Z", &selected_instance->T.z, 0.1f);

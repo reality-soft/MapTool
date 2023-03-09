@@ -3,7 +3,7 @@ struct VS_IN
 	float3 p : F3_POSITION;
 	float3 n : F3_NORMAL;
 	float4 c : F4_COLOR;
-	float2 t : F2_TEXTURE;
+	float2 t : F2_TEXTURE;  
     float2 layer_texel : F2_TEXEL;
 };
   

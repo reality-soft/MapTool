@@ -5,7 +5,7 @@ cbuffer cb_hitcircle : register(b1)
 {
 	bool   is_hit;
 	float  circle_radius;
-	float4 hitpoint;
+	float4 hitpoint;  
 	float4 circle_color;
 }
 
