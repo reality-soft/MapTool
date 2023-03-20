@@ -4,9 +4,9 @@ int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 	ENGINE->OnInit(hinstance, L"MapTool", { 1280, 720 });
 
-	MapTool map_tool;  
+	SCENE_MGR->SetScene<MapTool>();
 
-	ENGINE->Run(&map_tool);
+	ENGINE->Run();
 
 	ENGINE->OnRelease();
 

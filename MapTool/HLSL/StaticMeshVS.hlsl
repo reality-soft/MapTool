@@ -30,7 +30,7 @@ VS_OUT VS(VS_IN input)
     
     float4 world = mul(local, world_matrix);
     float4 projection = mul(world, ViewProjection());
-
+    
     output.lod = GetLod(input.p);
     
     output.p = projection;

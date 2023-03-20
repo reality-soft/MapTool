@@ -11,7 +11,6 @@ public:
 	void Frame();
 	void Release();  
 	XMVECTOR current_point;
-	CollisionBody* current_body = nullptr;
 
 private:
 	reality::CameraSystem* camera = nullptr;

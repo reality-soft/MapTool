@@ -21,6 +21,7 @@ enum class MsgType
 {
 	NONE,
 	OW_LEVEL_EDITOR,
+	OW_GUIDE_LINE,
 	OW_RES_VIEWER,
 	OPT_WIREFRAME,
 };
@@ -38,9 +39,16 @@ public:
 class GwPorperty : public reality::GuiWidget
 {
 public:
+	int visible_leaves;
+	XMFLOAT4 collide_pos;
+	XMFLOAT3 camera;
+
+public:
 	string fps;
-	string gpu_info;
-	string gpu_memory;
+	string visible_leaf;
+	string collision;
+	string camera_pos;
+
 public:
 	virtual void Update() override;
 	virtual void Render() override;
@@ -77,11 +85,8 @@ public:
 	char load_buffer[128] = {0,};
 
 private:
-	void CwSaveLoad();
 	void CwEditTerrain();
 	void CwObjectControl();
 
 	Texture* DragDropImage(string& name);
 };
-
-

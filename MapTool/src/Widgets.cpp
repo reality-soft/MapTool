@@ -17,7 +17,10 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_LEVEL_EDITOR;
         }
-
+        if (ImGui::MenuItem("Guide Line"))
+        {
+            msg_ = MsgType::OW_GUIDE_LINE;
+        }
         if (ImGui::MenuItem("Resource Veiwer"))
         {
             msg_ = MsgType::OW_RES_VIEWER;
@@ -39,11 +42,24 @@ void GwMainMenu::Render()
 
 void GwPorperty::Update()
 {
-    POINT cursor_pos;
-    GetCursorPos(&cursor_pos);
-    ScreenToClient(ENGINE->GetWindowHandle(), &cursor_pos);
+    fps = "[FPS] : " + to_string(TM_FPS);
 
-    fps =  "[FPS] : " + to_string(TM_FPS);
+    visible_leaf =
+        "[visible nodes]\n" +
+        to_string(visible_leaves) + "\n";
+
+    collision =
+        "[collision]\n" +
+        string("x : ") + to_string(collide_pos.x) + "\n" +
+        string("y : ") + to_string(collide_pos.y) + "\n" +
+        string("z : ") + to_string(collide_pos.z) + "\n";
+
+    camera_pos = 
+        "[camera pos]\n" +
+        string("X : ") + to_string(camera.x) + "\n" +
+        string("Y : ") + to_string(camera.y) + "\n" +
+        string("Z : ") + to_string(camera.z) + "\n";
+    
 }
 
 void GwPorperty::Render()
@@ -53,6 +69,9 @@ void GwPorperty::Render()
         ImGui::SetWindowPos(ImVec2(300, 300), ImGuiCond_FirstUseEver);
 
         ImGui::Text(fps.c_str());
+        ImGui::Text(visible_leaf.c_str());
+        ImGui::Text(collision.c_str());
+        ImGui::Text(camera_pos.c_str());
 
     }
     ImGui::End();
@@ -75,36 +94,6 @@ void GwLevelEditor::Render()
     ImGui::PushStyleColor(ImGuiCol_WindowBg, RGB_TO_FLOAT(32, 23, 36, 1));
     CwObjectControl();
     ImGui::PopStyleColor();
-
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, RGB_TO_FLOAT(35, 15, 21, 1));
-    CwSaveLoad();
-    ImGui::PopStyleColor();
-}
-
-void GwLevelEditor::CwSaveLoad()
-{
-    ImGui::Begin("Save Load");  
-    {
-        ImGui::InputText("Directory", dir_buffer, 128);
-
-        ImGui::InputText("##save", save_buffer, 128);
-        ImGui::SameLine();
-        if (ImGui::Button("Save"))
-        {
-            editing_level->ExportToFile(string(dir_buffer) + string(save_buffer));
-        }
-
-        ImGui::InputText("##load", load_buffer, 128);
-        ImGui::SameLine();
-        if (ImGui::Button("Load"))
-        {
-            loaded_level = new Level;
-            loaded_level->ImportFromFile(string(dir_buffer) + string(load_buffer));
-            QUADTREE->Init(loaded_level);  
-        }
-
-    }
-    ImGui::End();
 }
 
 void GwLevelEditor::CwEditTerrain()
@@ -241,7 +230,7 @@ void GwLevelEditor::CwObjectControl()
                     bool selected = ImGui::Selectable(inst_obj.object_name.c_str());
                     if (selected)
                     {
-                        inst_obj.AddNewInstance();
+                        inst_obj.AddNewInstance(inst_obj.object_name);
                         selected_instance = inst_obj.selected_instance;
                     }
                 }
@@ -264,7 +253,7 @@ void GwLevelEditor::CwObjectControl()
             if (ImGui::Button("Create Object Instanced"))  
             {
                 InstancedObject new_obj;
-                new_obj.Init(mesh_id_buffer, "InstancingVS.cso");
+                new_obj.Init(mesh_id_buffer, "InstancingVS.cso", "MeshSurfacePS.cso");
                 editing_level->inst_objects.push_back(new_obj);
             }
 

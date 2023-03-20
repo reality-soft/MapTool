@@ -1,21 +1,26 @@
 #include "PickingMgr.h"
 
+using namespace reality;
+
 void PickingMgr::Init(reality::CameraSystem* _camera)
 {
 	camera = _camera;  
+	current_point = XMVectorZero();
 }  
 
 void PickingMgr::Frame()
 {
-	reality::MouseRay current_ray = camera->CreateMouseRay();
-	reality::WorldRayCallback callback = PHYSICS->WorldPicking(current_ray);
-
-	RPtoXM(callback.hitpoint, current_point);
-	current_body = callback.body;
+	RayShape mouse_ray;
+	if (DINPUT->GetMouseState(L_BUTTON) == KEY_HOLD)
+	{
+		mouse_ray = camera->CreateMouseRay();
+		auto result = QUADTREE->RaycastAdjustLevel(mouse_ray, 10000);
+		if (result.success)
+			current_point = result.point;
+	}
 }
 
 void PickingMgr::Release()
 {
-	current_body = nullptr;
 	camera = nullptr;
 }

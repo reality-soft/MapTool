@@ -20,16 +20,6 @@ string LevelEditor::ExportToFile(string filepath)
 	file_transfer.WriteBinary<UINT>(level_mesh_.indices.data(), level_mesh_.indices.size());
 	file_transfer.WriteBinary<string>(texture_id.data(), texture_id.size());
 
-	UINT inst_list_size = 0;
-	inst_list_size = inst_objects.size();
-	file_transfer.WriteBinary<UINT>(&inst_list_size, 1);
-
-	for (auto& inst : inst_objects)
-	{
-		file_transfer.WriteBinary<string>(&inst.mesh_id_, 1);
-		file_transfer.WriteBinary<string>(&inst.vs_id_, 1);
-	}
-
 	file_transfer.Close();
 
 	return total_path;
@@ -57,12 +47,8 @@ bool LevelEditor::CopyFromSavedLevel(Level* saved_level)
 	ps_id_ = "LevelEditorPS.cso";
 
 	GenVertexNormal();
-	XMFLOAT2 minmax_height = GetMinMaxHeight();
 
 	if (CreateBuffers() == false)
-		return false;
-
-	if (CreateHeightField(minmax_height.x, minmax_height.y) == false)
 		return false;
 
 	return true;
@@ -126,7 +112,7 @@ void LevelEditor::SetEditSOStage()
 	// Set Shader : SO Gs
 	GeometryShader* gs = RESOURCE->UseResource<GeometryShader>(gs_id_);
 	if (gs != nullptr)
-		DX11APP->GetDeviceContext()->GSSetShader(gs->Get(), 0, 0);
+		DX11APP->GetDeviceContext()->GSSetShader(gs->GetStreamOutGS(), 0, 0);
 
 	// Stream Output Stage
 	UINT so_offset = 0;
@@ -160,17 +146,17 @@ void LevelEditor::GetEditSOStage()
 
 void LevelEditor::LevelEdit()
 {
-	if (PICKING->current_body == nullptr)
-		return;
+	//if (PICKING->current_body == nullptr)
+	//	return;
 
-	if (PICKING->current_body == height_field_body_)
-	{
-		hit_circle_.data.hitpoint = PICKING->current_point;
-		hit_circle_.data.is_hit = true;
-		hit_circle_.data.circle_radius = brush_scale;  
+	//if (PICKING->current_body == height_field_body_)
+	//{
+	//	hit_circle_.data.hitpoint = PICKING->current_point;
+	//	hit_circle_.data.is_hit = true;
+	//	hit_circle_.data.circle_radius = brush_scale;  
 
-		DX11APP->GetDeviceContext()->UpdateSubresource(hit_circle_.buffer.Get(), 0, nullptr, &hit_circle_.data, 0, 0);
-	}
+	//	DX11APP->GetDeviceContext()->UpdateSubresource(hit_circle_.buffer.Get(), 0, nullptr, &hit_circle_.data, 0, 0);
+	//}
 
 	if (brush_type == Sculpting)
 	{
@@ -221,30 +207,4 @@ bool LevelEditor::CreateTempBuffer(ID3D11Buffer** _buffer)
 		return false;
 
 	return true;
-}
-
-void LevelEditor::ResetHeightField()
-{
-	height_list_.clear();
-	GetHeightList();
-
-	height_field_body_->removeCollider(height_field_collider_);
-	PHYSICS->GetPhysicsWorld()->destroyCollisionBody(height_field_body_);
-
-	height_field_shape_ = nullptr;
-	height_field_collider_ = nullptr;
-	height_field_body_ = nullptr;
-
-	float heightest = 0;
-	float lowest = 0;
-	for (int i = 0; i < height_list_.size(); ++i)
-	{
-		if (heightest < height_list_[i])
-			heightest = height_list_[i];
-
-		else if (lowest > height_list_[i])
-			lowest = height_list_[i];
-	}
-
-	CreateHeightField(lowest, heightest);
 }

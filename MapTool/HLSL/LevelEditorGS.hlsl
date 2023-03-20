@@ -6,7 +6,7 @@ cbuffer edit_option : register(b0)
 	int altitude;
     int temp0;
     int temp1;  
-    int temp2;  
+    int temp2;
 }      
 
 [maxvertexcount(3)]

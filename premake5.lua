@@ -28,17 +28,26 @@ project "MapTool"
 
 	includedirs
 	{
-		"../Game-Engine/Engine/vendor/spdlog/include",
 		"../Game-Engine/Engine/src",
-		"../Game-Engine/Engine/src/Engine",
-		"../Game-Engine/Engine/src/ECS",
-		"../Game-Engine/Engine/src/Engine/SingletonClass",
+		"../Game-Engine/Engine/src/Actors",
+		"../Game-Engine/Engine/src/Components",
+		"../Game-Engine/Engine/src/Core",
+		"../Game-Engine/Engine/src/DataTypes",
+		"../Game-Engine/Engine/src/Headers",
+		"../Game-Engine/Engine/src/Physics",
+		"../Game-Engine/Engine/src/ResourceTypes",
+		"../Game-Engine/Engine/src/Systems",
+		"../Game-Engine/Engine/src/Tools",
+		"../Game-Engine/Engine/src/UI",
+		"../Game-Engine/Engine/src/World",
+		"../Game-Engine/Engine/src/Event",
+		"../Game-Engine/Engine/src/Scene",
+		"../Game-Engine/Engine/src/Sound",
+		"../Game-Engine/Engine/src/Input",
 		"../SDK/DirectXTK/include",
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
-		"../SDK/IMGUI/include",
-		"../SDK/RP3D/include",
-		"../SDK/ASSIMP/include"
+		"../SDK/IMGUI/include"
 	}
 
 	libdirs
@@ -47,9 +56,7 @@ project "MapTool"
 		"../SDK/DirectXTK/lib",
 		"../SDK/FBXSDK/lib/debug",
 		"../SDK/FMOD/lib/debug",
-		"../SDK/IMGUI/lib",
-		"../SDK/RP3D/lib/debug",
-		"../SDK/ASSIMP/include"
+		"../SDK/IMGUI/lib"
 	}
 
 	links
@@ -61,8 +68,7 @@ project "MapTool"
 		"zlib-md",
 		"fmod_vc",
 		"fmodL_vc",
-		"ImGui_Win32_Dx11_D",
-		"reactphysics3d"
+		"ImGui_Win32_Dx11_D"
 	}
 
 	filter "files:**VS.hlsl"

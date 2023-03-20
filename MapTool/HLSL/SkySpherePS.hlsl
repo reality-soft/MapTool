@@ -11,7 +11,7 @@ struct PS_OUT
 
 cbuffer cb_time : register(b1)
 {
-    float4 time;  
+    float4 time;
     float4 sky_color;
     float4 strength;
 }
