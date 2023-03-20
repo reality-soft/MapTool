@@ -1,13 +1,28 @@
 #include "GuideLineEditor.h"
 #include "Widgets.h"
+#include "PickingMgr.h"
 
-void GuideLineEditor::AddNewGuideLine(string name)
+void GuideLineEditor::AddNewGuideLine(string name, int _guide_type)
 {
+	GuideLine::GuideType guide_type = (GuideLine::GuideType)_guide_type;
+	string guide_line_mat;
+	switch (guide_type)
+	{
+	case GuideLine::GuideType::eBlocking:
+		guide_line_mat = "BlockingGuide.mat";
+		break;
+	case GuideLine::GuideType::eNpcTrack:
+		guide_line_mat = "NpcGuide.mat";
+		break;
+	}
+
 	GuideLine* new_guide_line = new GuideLine;
 	InstancedObject* new_node_mark = new InstancedObject;
 
-	new_node_mark->Init("SkySphere.stmesh", "InstancingVS.cso", "NodeMark_1.mat");
+	new_node_mark->Init("SkySphere.stmesh", "InstancingVS.cso", guide_line_mat);
 	new_guide_line->Init(GuideLine::GuideType::eNpcTrack);
+
+	new_guide_line->guide_type_ = guide_type;
 
 	guide_lines.insert(make_pair(name, new_guide_line));
 	node_marks.insert(make_pair(name, new_node_mark));
@@ -28,7 +43,7 @@ void GuideLineEditor::AddNewNode(XMVECTOR position)
 		return;
 
 	current_pin = current_mark->AddNewInstance(current_name + string("_pin"))->instance_id;
-	current_mark->SetInstanceScale(current_pin, {50, 50, 50});
+	current_mark->SetInstanceScale(current_pin, {25, 25, 25});
 	current_guide->AddNode(position);
 }
 
@@ -55,6 +70,22 @@ void GuideLineEditor::Active()
 
 void GuideLineEditor::Update()
 {
+	if (current_mark == nullptr && current_pin.empty())
+		return;
+
+	if (DINPUT->GetMouseState(L_BUTTON) == KEY_HOLD)
+	{
+		current_mark->SetInstanceTranslation(current_pin, XMFLOAT3(PICKING->current_point.m128_f32));
+	
+		UINT node_index = 0;
+		for (auto& pin : current_mark->instance_pool)
+		{
+			current_guide->line_nodes[node_index++] = XMLoadFloat3(&pin.second->T);
+		}
+
+		current_guide->UpdateLines();
+
+	}
 }
 
 void GuideLineEditor::Render()
@@ -75,12 +106,17 @@ void GuideLineEditor::Render()
 			ImGui::EndListBox();
 		}
 
+		static int guide_type = 0;
+		ImGui::RadioButton("BLocking Field", &guide_type, 0);
+		ImGui::RadioButton("Npc Track", &guide_type, 1);
+
 		static char buffer[128] = { 0, };
 		ImGui::InputText("##string", buffer, 128);
 		ImGui::SameLine();
+
 		if (ImGui::Button("Add New Guide Line"))
 		{
-			AddNewGuideLine(string(buffer));
+			AddNewGuideLine(string(buffer), guide_type);
 			ZeroMemory(buffer, sizeof(buffer));
 		}
 	}
@@ -110,6 +146,38 @@ void GuideLineEditor::Render()
 		{
 
 		}
+	}
+
+	if (current_guide)
+	{
+		for (auto& node : current_guide->line_nodes)
+		{
+			ImGui::Text(string("[" + to_string(node.first) + "]").c_str());
+			ImGui::Text(VectorToString(node.second).c_str());
+		}
+	}
+
+	if (ImGui::Button("Save To Map Data"))
+	{
+		FileTransfer out_mapdata("../../Contents/BinaryPackage/DeadPoly_GuideLine.mapdat", WRITE);
+
+		UINT num_guide_lines = guide_lines.size();
+		out_mapdata.WriteBinary<UINT>(&num_guide_lines, 1);
+
+		for (auto& guide_line : guide_lines)
+		{
+			UINT num_nodes = guide_line.second->line_nodes.size();
+			out_mapdata.WriteBinary<UINT>(&num_nodes, 1);
+
+			for (auto& node : guide_line.second->line_nodes)
+			{
+				UINT node_nunber = node.first;
+				XMVECTOR node_pos = node.second;
+				out_mapdata.WriteBinary<UINT>(&node_nunber, 1);
+				out_mapdata.WriteBinary<XMVECTOR>(&node_pos, 1);
+			}
+		}
+
 	}
 
 	DrawGuideLine();

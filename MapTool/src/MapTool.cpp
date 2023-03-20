@@ -2,17 +2,15 @@
 #include "ComponentSystem.h"
 #include "TestCapsuleActor.h"
 #include "PickingMgr.h"
+#include "FbxMgr.h"
 using namespace reality;
 
 void MapTool::OnInit()
 {
-	RESOURCE->Init("../../Contents/");  
+	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
-	//FbxImportOption option;
-	//option.import_rotation = { 90, 0, 180, 0 };
-	//option.import_scale = 10.0f;
-	//FBX->ImportAndSaveFbx("../../Contents/FBX/DeadPoly_FullLevel.fbx", option);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/LevelLength.fbx");
 
 	//GUI
 	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);

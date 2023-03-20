@@ -44,6 +44,7 @@ project "MapTool"
 		"../Game-Engine/Engine/src/Scene",
 		"../Game-Engine/Engine/src/Sound",
 		"../Game-Engine/Engine/src/Input",
+		"../Game-Engine/Engine/src/Managers",
 		"../SDK/DirectXTK/include",
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
