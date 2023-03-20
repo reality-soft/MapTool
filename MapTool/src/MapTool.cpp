@@ -23,9 +23,6 @@ void MapTool::OnInit()
 	sky_sphere.CreateSphere();
 	light_mesh_level.Create("DeadPoly_FullLevel.ltmesh", "LevelVS.cso", "LevelGS.cso", "DeadPoly_Level_Collision.ltmesh");
 
-	//player_ent = SCENE_MGR->AddPlayer<TestCapsuleActor>();
-	//SCENE_MGR->GetActor<TestCapsuleActor>(player_ent)->Create();
-
 	sys_movement.OnCreate(SCENE_MGR->GetRegistry());
 	sys_light.OnCreate(SCENE_MGR->GetRegistry());
 	sys_camera.TargetTag(SCENE_MGR->GetRegistry(), "Debug");
