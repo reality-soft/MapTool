@@ -15,7 +15,7 @@ public:
 	InstancedObject* current_mark = nullptr;
 
 	string current_name;
-	string current_pin;
+	UINT current_pin = 0;
 	
 	shared_ptr<VertexShader> vertex_shader;
 	shared_ptr<PixelShader> pixel_shader;

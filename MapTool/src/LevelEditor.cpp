@@ -16,7 +16,7 @@ string LevelEditor::ExportToFile(string filepath)
 	file_transfer.WriteBinary<XMINT2>(&row_col_blocks_, 1);
 
 	// Arrays
-	file_transfer.WriteBinary<LevelVertex>(level_mesh_.vertices.data(), level_mesh_.vertices.size());
+	file_transfer.WriteBinary<Vertex>(level_mesh_.vertices.data(), level_mesh_.vertices.size());
 	file_transfer.WriteBinary<UINT>(level_mesh_.indices.data(), level_mesh_.indices.size());
 	file_transfer.WriteBinary<string>(texture_id.data(), texture_id.size());
 

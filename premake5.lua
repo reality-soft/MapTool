@@ -28,8 +28,8 @@ project "MapTool"
 
 	includedirs
 	{
-		"../Game-Engine/Engine/src",
 		"../Game-Engine/Engine/src/Actors",
+		"../Game-Engine/Engine/src/Animation",
 		"../Game-Engine/Engine/src/Components",
 		"../Game-Engine/Engine/src/Core",
 		"../Game-Engine/Engine/src/DataTypes",
@@ -45,6 +45,9 @@ project "MapTool"
 		"../Game-Engine/Engine/src/Sound",
 		"../Game-Engine/Engine/src/Input",
 		"../Game-Engine/Engine/src/Managers",
+		"../Game-Engine/Engine/src",
+		"../Game-Engine/Engine/vendor/spdlog/include",
+
 		"../SDK/DirectXTK/include",
 		"../SDK/FBXSDK/include",
 		"../SDK/FMOD/include",
@@ -85,6 +88,11 @@ project "MapTool"
 	filter "files:**GS.hlsl"
 	    shadertype "Geometry"
 		shaderentry "GS"
+	    shadermodel "5.0"
+
+	filter "files:**CS.hlsl"
+	    shadertype "Compute"
+		shaderentry "CS"
 	    shadermodel "5.0"
 
 	filter "system:windows"

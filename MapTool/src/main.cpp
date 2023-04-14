@@ -2,7 +2,7 @@
 
 int WINAPI wWinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	ENGINE->OnInit(hinstance, L"MapTool", { 1280, 720 });
+	ENGINE->OnInit(hinstance, L"MapTool", R1920x1080, false);
 
 	SCENE_MGR->SetScene<MapTool>();
 

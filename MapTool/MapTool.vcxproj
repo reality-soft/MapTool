@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -135,7 +135,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PLATFORM_WINDOWS;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Game-Engine\Engine\src\Actors;..\..\Game-Engine\Engine\src\Animation;..\..\Game-Engine\Engine\src\Components;..\..\Game-Engine\Engine\src\Core;..\..\Game-Engine\Engine\src\DataTypes;..\..\Game-Engine\Engine\src\Headers;..\..\Game-Engine\Engine\src\Physics;..\..\Game-Engine\Engine\src\ResourceTypes;..\..\Game-Engine\Engine\src\Systems;..\..\Game-Engine\Engine\src\Tools;..\..\Game-Engine\Engine\src\UI;..\..\Game-Engine\Engine\src\World;..\..\Game-Engine\Engine\src\Event;..\..\Game-Engine\Engine\src\Scene;..\..\Game-Engine\Engine\src\Sound;..\..\Game-Engine\Engine\src\Input;..\..\Game-Engine\Engine\src\Managers;..\..\Game-Engine\Engine\src;..\..\Game-Engine\Engine\vendor\spdlog\include;..\..\SDK\DirectXTK\include;..\..\SDK\FBXSDK\include;..\..\SDK\FMOD\include;..\..\SDK\IMGUI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -165,7 +165,6 @@
     <ClInclude Include="src\MapTool.h" />
     <ClInclude Include="src\PickingMgr.h" />
     <ClInclude Include="src\ResourceSelector.h" />
-    <ClInclude Include="src\TestCapsuleActor.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
@@ -174,11 +173,40 @@
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\PickingMgr.cpp" />
     <ClCompile Include="src\ResourceSelector.cpp" />
-    <ClCompile Include="src\TestCapsuleActor.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="HLSL\CollisionMeshVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\EffectDefaultPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\EffectDefaultVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\EffectParticleGS.hlsl">
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>GS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\EffectParticleGlowPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\EffectParticleNoBillboardGS.hlsl">
+      <ShaderType>Geometry</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>GS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\InstancingVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -198,11 +226,6 @@
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelGS.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>GS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
       <ShaderType>Pixel</ShaderType>
@@ -229,6 +252,21 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\PhysicsCS.hlsl">
+      <ShaderType>Compute</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>CS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\SkinningPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\SkinningVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\SkySpherePS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -240,6 +278,26 @@
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\StaticMeshVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\StaticShadowMapPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\StaticShadowMapVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\UIPS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\UIVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>

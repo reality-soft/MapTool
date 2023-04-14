@@ -22,7 +22,7 @@ float4 PS(GS_IN output) : SV_Target
     
     
     float bright = max(0.2f, dot(output.n, -direction));
-    float4 light_color = float4(bright, bright, bright, 1) * color;  
+    float4 light_color = float4(bright, bright, bright, 1);// * color;
 
     return base_color * light_color * float4(output.c.xyz, 1);  
 }

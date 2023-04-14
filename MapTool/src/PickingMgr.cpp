@@ -14,7 +14,7 @@ void PickingMgr::Frame()
 	if (DINPUT->GetMouseState(L_BUTTON) == KEY_HOLD)
 	{
 		mouse_ray = camera->CreateMouseRay();
-		auto result = QUADTREE->RaycastAdjustLevel(mouse_ray, 10000);
+		auto result = QUADTREE->Raycast(mouse_ray);
 		if (result.success)
 			current_point = result.point;
 	}

@@ -3,41 +3,42 @@
 struct PS_OUT
 {
     float4 p : SV_POSITION;
+    float3 n : NORMAL0;
     float2 t : TEXCOORD;
+    
     float lod : TEXCOORD1;
-    
     float3 view_dir : TEXCOORD2;
-    
-    float3 normal : NORMAL0;
     float3 origin : NORMAL1;
-    //float3 tangent;
-    //float3 binormal;
+    float4 shadow_tex : TEXCOORD3;
 };
 
-Texture2D textures : register(t0);
+Texture2D textures[7] : register(t0);
 SamplerState samper_state : register(s0);
 
-float4 PS(PS_OUT output) : SV_Target
+Texture2D shadow_map : register(t8);
+SamplerState shadow_sampler : register(s1);
+
+float4 PS(PS_OUT input) : SV_Target
 {
-    float4 base_color = textures.Sample(samper_state, output.t);    
-    float4 ambient_color = float4(0.1f, 0.1f, 0.1f, 0.1f);
-    float4 specular_color = float4(0, 0, 0, 0);
-    float light_intensity = dot(output.normal, direction.xyz);
-    
-    float4 color = ambient_color;
-    if (light_intensity > 0.0f)
+    if (length(input.origin - eye_position) > fog_distance * 2)
     {
-        ambient_color *= light_intensity;
-        //float3 reflection = normalize(2 * light_intensity * output.normal - direction.xyz);
-        //specular_color = dot(reflection, output.view_dir);
+        return fog_color;
     }
     
+    float4 albedo = textures[0].Sample(samper_state, input.t);
+    float4 roughness = textures[3].Sample(samper_state, input.t);
     
-    base_color += light_intensity * 0.1f;
-    //color += specular_color;
+    float4 final_color = WhiteColor();
 
-    return base_color;
-    //float sun_distance = 1.0f - length(output.origin - sun_position.xyz) / (length(sun_position.xyz) * 2);    
-    //return base_color + light_color;
-    //light_color;
+    albedo = ChangeSaturation(albedo, 1.3f);
+    albedo = ChangeValue(albedo, 0.5f);
+    albedo = ApplyHemisphericAmbient(input.n, albedo);
+    
+    final_color = ApplyCookTorrance(albedo, roughness.r, specular_strength, input.n, input.view_dir);
+    final_color += ApplyPointLight(WhiteColor(), input.n, input.origin, input.view_dir);
+    final_color += ApplySpotLight(WhiteColor(), input.n, input.origin, input.view_dir);    
+    
+    final_color = ApplyDistanceFog(final_color, input.origin);
+
+    return final_color;
 }

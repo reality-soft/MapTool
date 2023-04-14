@@ -87,11 +87,11 @@ void GwLevelEditor::Update()
 
 void GwLevelEditor::Render()
 {
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, RGB_TO_FLOAT(0, 42, 38, 1));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_RGB_TO_FLOAT(0, 42, 38, 1));
     CwEditTerrain();
     ImGui::PopStyleColor();
 
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, RGB_TO_FLOAT(32, 23, 36, 1));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, IM_RGB_TO_FLOAT(32, 23, 36, 1));
     CwObjectControl();
     ImGui::PopStyleColor();
 }

@@ -42,7 +42,7 @@ void GuideLineEditor::AddNewNode(XMVECTOR position)
 	if (current_guide == nullptr || current_mark == nullptr)
 		return;
 
-	current_pin = current_mark->AddNewInstance(current_name + string("_pin"))->instance_id;
+	current_pin = current_mark->AddNewInstance(current_name + string("_pin"))->index;
 	current_mark->SetInstanceScale(current_pin, {25, 25, 25});
 	current_guide->AddNode(position);
 }
@@ -70,17 +70,17 @@ void GuideLineEditor::Active()
 
 void GuideLineEditor::Update()
 {
-	if (current_mark == nullptr && current_pin.empty())
+	if (current_mark == nullptr)
 		return;
 
 	if (DINPUT->GetMouseState(L_BUTTON) == KEY_HOLD)
 	{
 		current_mark->SetInstanceTranslation(current_pin, XMFLOAT3(PICKING->current_point.m128_f32));
 	
-		UINT node_index = 0;
+		UINT index = 0;
 		for (auto& pin : current_mark->instance_pool)
 		{
-			current_guide->line_nodes[node_index++] = XMLoadFloat3(&pin.second->T);
+			current_guide->line_nodes[index++] = XMLoadFloat3(&pin.second->T);
 		}
 
 		current_guide->UpdateLines();
@@ -130,7 +130,7 @@ void GuideLineEditor::Render()
 			{				
 				if (ImGui::Selectable(node.second->instance_id.c_str()))
 				{
-					current_pin = node.second->instance_id;
+					current_pin = node.second->index;
 				}
 			}
 
