@@ -9,23 +9,30 @@ void MapTool::OnInit()
 	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
-	//GUI
-	GUI->AddWidget(GWNAME(gw_main_menu_), &gw_main_menu_);
-	GUI->AddWidget(GWNAME(gw_property_), &gw_property_);
-	
+	//FbxImportOption import_option;
+	//import_option.import_scale = 12.0f;
+	//import_option.recalculate_normal = true;
+
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/Gas.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+
+	GUI->AddWidget<GwMainMenu>("mainmenu");
+	GUI->AddWidget<GwPorperty>("property");
+	gw_main_menu_ = GUI->FindWidget<GwMainMenu>("mainmenu");
+	gw_property_ = GUI->FindWidget<GwPorperty>("property");
+
 	res_selector_.Init();
-	
 
 	light_mesh_level.Create("DNDLevel_WithCollision_01.stmesh", "LevelVS.cso");
 	
-
+	sys_render.OnCreate(reg_scene_);
 	sys_light.OnCreate(SCENE_MGR->GetRegistry());
 	sys_camera.TargetTag(SCENE_MGR->GetRegistry(), "Debug");
 	sys_camera.OnCreate(SCENE_MGR->GetRegistry());
 	sys_camera.SetSpeed(1000);
+	sys_effect.OnCreate(reg_scene_);
 
 	QUADTREE->Init(&light_mesh_level,SCENE_MGR->GetRegistry());
-	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
+	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
 	QUADTREE->CreatePhysicsCS();
 	QUADTREE->InitCollisionMeshes();
 
@@ -36,7 +43,7 @@ void MapTool::OnInit()
 	PICKING->Init(&sys_camera);
 
 	environment_.CreateEnvironment();
-	environment_.SetWorldTime(60, 60, true);
+	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(10000, 10000);
 	environment_.SetLightProperty(0.2f, 0.2f);
@@ -49,11 +56,12 @@ void MapTool::OnUpdate()
 	sys_camera.OnUpdate(SCENE_MGR->GetRegistry());
 	sys_light.OnUpdate(SCENE_MGR->GetRegistry());
 	environment_.Update(&sys_camera, &sys_light);
+	sys_effect.OnUpdate(reg_scene_);
 
-	gw_property_.collide_pos = XMFLOAT4(PICKING->current_point.m128_f32);
+	gw_property_->collide_pos = XMFLOAT4(PICKING->current_point.m128_f32);
 	// Gui Msg Proc;
 
-	switch (gw_main_menu_.msg_)  
+	switch (gw_main_menu_->msg_)  
 	{
 	case MsgType::NONE: break;
 
@@ -79,12 +87,14 @@ void MapTool::OnRender()
 	if (wire_frame)
 		DX11APP->SetWireframes();
 
-	gw_property_.camera = XMFLOAT3(sys_camera.GetCamera()->camera_pos.m128_f32);
+	gw_property_->camera = XMFLOAT3(sys_camera.GetCamera()->camera_pos.m128_f32);
 
 	environment_.Render();
 	light_mesh_level.Update();
 	light_mesh_level.Render();
 	QUADTREE->RenderCollisionMeshes();
+
+	sys_render.OnUpdate(reg_scene_);
 
 	//GUI
 	GUI->RenderWidgets();

@@ -9,9 +9,12 @@ struct VS_IN
 struct VS_OUT
 {
     float4 p : SV_POSITION;
-    float4 n : NORMAL;
-    float2 t : TEXCOORD;  
+    float3 n : NORMAL0;
+    float2 t : TEXCOORD0;
+    
     float lod : TEXCOORD1;
+    float3 view_dir : TEXCOORD2;
+    float3 origin : NORMAL1;
 };
 
 struct IntanceData
@@ -31,10 +34,13 @@ VS_OUT VS(VS_IN input, uint inst : SV_InstanceID)
     float4 world = mul(local, instance_buffer[inst].world_matrix);
     float4 projection = mul(world, ViewProjection());
     
-    output.lod = GetLod(input.p);
     output.p = projection;
     output.n = normal;
-    output.t = input.t;
+    output.t = input.t;    
+        
+    output.lod = GetLod(input.p);
+    output.view_dir = normalize(camera_world - world).xyz;
+    output.origin = world;
 
     return output;
 }

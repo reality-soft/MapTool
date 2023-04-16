@@ -5,13 +5,13 @@
 
 void ResourceSelector::Active()
 {
-    if (GUI->FindWidget(GWNAME(*this)) == nullptr)
+    if (GUI->FindWidget<ResourceSelector>("resource") == nullptr)
     {
-        GUI->AddWidget(GWNAME(*this), this);
+        GUI->AddWidget<ResourceSelector>("resource");
     }
     else
     {
-        NOT(GUI->FindWidget(GWNAME(*this))->open_);  
+        NOT(GUI->FindWidget<ResourceSelector>("resource")->open_);
     }
 }
 

@@ -13,7 +13,6 @@
 #define TEX_COLOR IM_RGB_TO_FLOAT(63, 136, 143)
 #define SOUND_COLOR IM_RGB_TO_FLOAT(151, 79, 102)
 
-#define GWNAME(gwclass) typeid(gwclass).name()
 #define NOT(a) a = !a
 using namespace reality;
 

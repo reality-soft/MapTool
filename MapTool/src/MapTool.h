@@ -26,10 +26,12 @@ public:
 
 	reality::LightingSystem sys_light;
 	reality::CameraSystem sys_camera;
+	reality::EffectSystem sys_effect;
+	reality::RenderSystem sys_render;
 
 public:
-	GwMainMenu gw_main_menu_;
-	GwPorperty gw_property_;
+	GwMainMenu* gw_main_menu_ = nullptr;
+	GwPorperty* gw_property_ = nullptr;
 	GuideLineEditor gw_guide_line_;
 	ResourceSelector res_selector_;
 };

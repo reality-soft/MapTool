@@ -160,6 +160,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\FX\FX_BloodImpact.h" />
+    <ClInclude Include="src\FX\FX_ConcreteImpact.h" />
+    <ClInclude Include="src\FX\FX_Explosion.h" />
+    <ClInclude Include="src\FX\FX_Flame.h" />
+    <ClInclude Include="src\FX\FX_Muzzle.h" />
     <ClInclude Include="src\GuideLineEditor.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
@@ -168,6 +173,11 @@
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FX\FX_BloodImpact.cpp" />
+    <ClCompile Include="src\FX\FX_ConcreteImpact.cpp" />
+    <ClCompile Include="src\FX\FX_Explosion.cpp" />
+    <ClCompile Include="src\FX\FX_Flame.cpp" />
+    <ClCompile Include="src\FX\FX_Muzzle.cpp" />
     <ClCompile Include="src\GuideLineEditor.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
@@ -212,37 +222,12 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorGS.hlsl">
-      <ShaderType>Geometry</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>GS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LevelEditorVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
     <FxCompile Include="HLSL\LevelPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\LevelVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LightMeshPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\LightMeshVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
@@ -256,6 +241,16 @@
       <ShaderType>Compute</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>CS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\PinInstancePS.hlsl">
+      <ShaderType>Pixel</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>PS</EntryPointName>
+    </FxCompile>
+    <FxCompile Include="HLSL\PinInstanceVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkinningPS.hlsl">
       <ShaderType>Pixel</ShaderType>
