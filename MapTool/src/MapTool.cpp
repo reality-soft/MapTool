@@ -103,9 +103,9 @@ void MapTool::OnRender()
 		single_shadow_.RenderDepthMap(XMVectorSet(5000, 5000, -5000, 0), XMVectorSet(0, 0, 0, 0));
 	i = 0;
 
-	//single_shadow_.RenderShadowMap();
+	single_shadow_.RenderShadowMap();
 	light_mesh_level.Update();
-	//single_shadow_.SetShadowMapSRV();
+	single_shadow_.SetShadowMapSRV();
 	light_mesh_level.Render();
 
 
