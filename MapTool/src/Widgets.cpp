@@ -73,6 +73,33 @@ void GwPorperty::Render()
         ImGui::Text(collision.c_str());
         ImGui::Text(camera_pos.c_str());
 
+        ImTextureID im_tex;
+        im_tex = (ImTextureID)(single_shadow->GetDepthMapSRV());
+        ImGui::Image(im_tex, ImVec2(200, 200));
+
+        im_tex = (ImTextureID)(single_shadow->GetRTSRV());
+        ImGui::Image(im_tex, ImVec2(200, 200));
+
+
+        D3D11_RASTERIZER_DESC rs_desc;
+        ZeroMemory(&rs_desc, sizeof(rs_desc));
+        
+        rs_desc.FillMode = D3D11_FILL_SOLID;
+        rs_desc.CullMode = D3D11_CULL_NONE;
+        rs_desc.FrontCounterClockwise = false;
+        rs_desc.DepthClipEnable = false;
+
+        ImGui::DragInt("DepthBias", &db, 1000);
+        ImGui::DragFloat("SlopeScaledDepthBias", &sdb, 0.01f);
+        ImGui::DragFloat("DepthBiasClamp", &clp, 0.01f);
+
+        // Set depth bias parameters
+        rs_desc.DepthBias = db;
+        rs_desc.SlopeScaledDepthBias = sdb;
+        rs_desc.DepthBiasClamp = clp;
+
+        // Create the rasterizer state
+        HRESULT hr = DX11APP->GetDevice()->CreateRasterizerState(&rs_desc, &single_shadow->depth_bias_rs_);
     }
     ImGui::End();
 }

@@ -192,6 +192,11 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
+    <FxCompile Include="HLSL\DepthMapVS.hlsl">
+      <ShaderType>Vertex</ShaderType>
+      <ShaderModel>5.0</ShaderModel>
+      <EntryPointName>VS</EntryPointName>
+    </FxCompile>
     <FxCompile Include="HLSL\EffectDefaultPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -242,12 +247,12 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>CS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\PinInstancePS.hlsl">
+    <FxCompile Include="HLSL\ShadowPS.hlsl">
       <ShaderType>Pixel</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>PS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\PinInstanceVS.hlsl">
+    <FxCompile Include="HLSL\ShadowVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>
@@ -273,16 +278,6 @@
       <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\StaticMeshVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\StaticShadowMapPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\StaticShadowMapVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>VS</EntryPointName>

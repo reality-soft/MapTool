@@ -4,6 +4,7 @@
 #include "ResourceSelector.h"
 #include "StaticMeshLevel.h"
 #include "GuideLineEditor.h"
+#include "StaticShadows.h"
 
 class MapTool : public reality::Scene
 {
@@ -28,6 +29,7 @@ public:
 	reality::CameraSystem sys_camera;
 	reality::EffectSystem sys_effect;
 	reality::RenderSystem sys_render;
+	SingleShadow single_shadow_;
 
 public:
 	GwMainMenu* gw_main_menu_ = nullptr;

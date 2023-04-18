@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_include.h"
 #include "LevelEditor.h"
+#include "StaticShadows.h"
 
 #define IM_RGB_TO_FLOAT(x, y, z) ImVec4(x / 255.f, y / 255.f, z / 255.f, 1.f)
 #define LISTBOX_COLOR IM_RGB_TO_FLOAT(11, 15, 13)
@@ -47,6 +48,11 @@ public:
 	string visible_leaf;
 	string collision;
 	string camera_pos;
+	reality::SingleShadow* single_shadow = nullptr;
+
+	int db = 1;
+	float sdb = 1.0f;
+	float clp = 0.0f;
 
 public:
 	virtual void Update() override;

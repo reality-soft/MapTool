@@ -24,7 +24,7 @@ void GuideLineEditor::AddNewGuideLine(string name, int _guide_type)
 	GuideLine* new_guide_line = new GuideLine;
 	InstancedObject* new_node_mark = new InstancedObject;
 
-	new_node_mark->Init("SkySphere.stmesh", "PinInstanceVS.cso", guide_line_mat);
+	new_node_mark->Init("SkySphere.stmesh", "StaticMeshVS.cso", guide_line_mat);
 	new_guide_line->Init(guide_type);
 
 	guide_lines.insert(make_pair(name, new_guide_line));
@@ -177,7 +177,7 @@ void GuideLineEditor::Render()
 		if (ImGui::Button("+"))
 		{
 			AddNewNode(XMVectorZero());
-			entt::entity ent = AddCustumMeshActor("Gas.stmesh", "StaticMeshVS.cso");
+			entt::entity ent = AddCustumMeshActor("SK_Handgun_01.stmesh", "StaticMeshVS.cso");
 			custum_meshs.push_back(ent);
 			//entt::entity ent = EFFECT_MGR->SpawnEffect<reality::FX_Flame>(XMVectorZero(), XMQuaternionIdentity(), XMVectorSet(10.0f, 10.0f, 10.0f, 0.0f));
 			//flame_effects.push_back(ent);

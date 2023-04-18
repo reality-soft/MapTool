@@ -9,11 +9,11 @@ void MapTool::OnInit()
 	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
-	//FbxImportOption import_option;
-	//import_option.import_scale = 12.0f;
+	//FbxImportOption import_option;s
+	//import_option.import_scale = 1.0f;
 	//import_option.recalculate_normal = true;
 
-	//FBX->ImportAndSaveFbx("../../Contents/FBX/Gas.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/SK_Handgun_01.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
 
 	GUI->AddWidget<GwMainMenu>("mainmenu");
 	GUI->AddWidget<GwPorperty>("property");
@@ -26,9 +26,12 @@ void MapTool::OnInit()
 	
 	sys_render.OnCreate(reg_scene_);
 	sys_light.OnCreate(SCENE_MGR->GetRegistry());
+	sys_light.SetGlobalLightPos({5000, 5000, -5000});
 	sys_camera.TargetTag(SCENE_MGR->GetRegistry(), "Debug");
 	sys_camera.OnCreate(SCENE_MGR->GetRegistry());
 	sys_camera.SetSpeed(1000);
+	sys_camera.SetNearZ(1.0f);
+	sys_camera.SetFarZ(10000.0f);
 	sys_effect.OnCreate(reg_scene_);
 
 	QUADTREE->Init(&light_mesh_level,SCENE_MGR->GetRegistry());
@@ -47,6 +50,10 @@ void MapTool::OnInit()
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(10000, 10000);
 	environment_.SetLightProperty(0.2f, 0.2f);
+
+	single_shadow_.Init({5000,15000}, {8192,8192}, {1024,1024}, "DepthMapVS.cso", "ShadowVS.cso", "ShadowPS.cso");
+	single_shadow_.static_mesh_level_ = &light_mesh_level;
+	gw_property_->single_shadow = &single_shadow_;
 }
 
 void MapTool::OnUpdate()
@@ -83,15 +90,25 @@ void MapTool::OnUpdate()
 }
 
 void MapTool::OnRender()
-{   
+{
 	if (wire_frame)
 		DX11APP->SetWireframes();
 
 	gw_property_->camera = XMFLOAT3(sys_camera.GetCamera()->camera_pos.m128_f32);
 
 	environment_.Render();
+
+	static int i = 1;
+	if (i)
+		single_shadow_.RenderDepthMap(XMVectorSet(5000, 5000, -5000, 0), XMVectorSet(0, 0, 0, 0));
+	i = 0;
+
+	//single_shadow_.RenderShadowMap();
 	light_mesh_level.Update();
+	//single_shadow_.SetShadowMapSRV();
 	light_mesh_level.Render();
+
+
 	QUADTREE->RenderCollisionMeshes();
 
 	sys_render.OnUpdate(reg_scene_);
