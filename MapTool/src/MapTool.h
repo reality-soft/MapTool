@@ -5,6 +5,7 @@
 #include "StaticMeshLevel.h"
 #include "GuideLineEditor.h"
 #include "StaticShadows.h"
+#include "NavigationEditor.h"
 
 class MapTool : public reality::Scene
 {
@@ -29,12 +30,14 @@ public:
 	reality::CameraSystem sys_camera;
 	reality::EffectSystem sys_effect;
 	reality::RenderSystem sys_render;
-	SingleShadow single_shadow_;
+	//SingleShadow single_shadow_;
+	//CubemapShadow cube_map_shadow_;
 
 public:
 	GwMainMenu* gw_main_menu_ = nullptr;
 	GwPorperty* gw_property_ = nullptr;
 	GuideLineEditor gw_guide_line_;
 	ResourceSelector res_selector_;
+	NavigationEditor gw_navi_editor_;
 };
 

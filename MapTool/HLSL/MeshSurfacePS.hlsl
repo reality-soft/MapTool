@@ -17,6 +17,8 @@ SamplerState samper_state : register(s0);
 float4 PS(PS_OUT input) : SV_Target
 {    
     float4 albedo = textures[0].Sample(samper_state, input.t);
+    float4 normal = textures[1].Sample(samper_state, input.t);
+    normal = normalize(normal);
     float4 final_color = WhiteColor();
     float4 roughness = textures[3].Sample(samper_state, input.t);
 
@@ -24,10 +26,12 @@ float4 PS(PS_OUT input) : SV_Target
     albedo = ChangeValue(albedo, 0.5f);
     albedo = ApplyHemisphericAmbient(input.n, albedo);
     
-    final_color = ApplyCookTorrance(albedo, 0.2f, specular_strength, input.n, input.view_dir);
+    final_color = ApplyCookTorrance(albedo, roughness.r, 0.01, input.n, input.view_dir);
     final_color += ApplyPointLight(WhiteColor(), input.n, input.origin, input.view_dir);
     final_color += ApplySpotLight(WhiteColor(), input.n, input.origin, input.view_dir);
     final_color = ApplyDistanceFog(final_color, input.origin);
     
     return final_color;
+    
+    //return float4(input.n, 1);
 }

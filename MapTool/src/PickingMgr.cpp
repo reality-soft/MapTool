@@ -16,7 +16,10 @@ void PickingMgr::Frame()
 		mouse_ray = camera->CreateMouseRay();
 		auto result = QUADTREE->Raycast(mouse_ray);
 		if (result.success)
+		{
 			current_point = result.point;
+			current_tri = result.tri_index;
+		}
 	}
 }
 

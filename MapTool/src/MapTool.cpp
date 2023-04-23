@@ -9,12 +9,11 @@ void MapTool::OnInit()
 	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
-	//FbxImportOption import_option;s
-	//import_option.import_scale = 1.0f;
+	FbxImportOption import_option;
+	import_option.import_scale = 0.1f;
 	//import_option.recalculate_normal = true;
-
-	//FBX->ImportAndSaveFbx("../../Contents/FBX/SK_Handgun_01.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
-
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/Vaccine.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	
 	GUI->AddWidget<GwMainMenu>("mainmenu");
 	GUI->AddWidget<GwPorperty>("property");
 	gw_main_menu_ = GUI->FindWidget<GwMainMenu>("mainmenu");
@@ -38,28 +37,31 @@ void MapTool::OnInit()
 	QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.mapdat");
 	QUADTREE->CreatePhysicsCS();
 	QUADTREE->InitCollisionMeshes();
-
+	QUADTREE->view_collisions_ = true;
 	//QUADTREE->CreateQuadTreeData(4);
 	//QUADTREE->ExportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
 	//QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
 
 	PICKING->Init(&sys_camera);
-
+	
 	environment_.CreateEnvironment();
 	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(10000, 10000);
 	environment_.SetLightProperty(0.2f, 0.2f);
 
-	single_shadow_.Init({5000,15000}, {8192,8192}, {1024,1024}, "DepthMapVS.cso", "ShadowVS.cso", "ShadowPS.cso");
-	single_shadow_.static_mesh_level_ = &light_mesh_level;
-	gw_property_->single_shadow = &single_shadow_;
+	//single_shadow_.Init({5000,15000}, {8192,8192}, {1024,1024}, "DepthMapVS.cso", "ShadowVS.cso", "ShadowPS.cso");
+	//single_shadow_.static_mesh_level_ = &light_mesh_level;
+	//gw_property_->single_shadow = &single_shadow_;
+
+	//cube_map_shadow_.Init({ 10.f, 1000.f }, { 2048, 2048 }, "DepthMapVS.cso");
+	//gw_property_->cube_shadow_ = &cube_map_shadow_;
 }
 
 void MapTool::OnUpdate()
 {
 	QUADTREE->Frame(&sys_camera);
-	QUADTREE->UpdatePhysics("PhysicsCS.cso");
+	QUADTREE->UpdatePhysics();
 	sys_camera.OnUpdate(SCENE_MGR->GetRegistry());
 	sys_light.OnUpdate(SCENE_MGR->GetRegistry());
 	environment_.Update(&sys_camera, &sys_light);
@@ -83,6 +85,9 @@ void MapTool::OnUpdate()
 	}
 	case MsgType::OPT_WIREFRAME:
 		NOT(wire_frame);
+
+	case MsgType::OW_NAVI_EDITOR:
+		gw_navi_editor_.Active();
 	}
 
 	QUADTREE->Frame(&sys_camera);
@@ -98,14 +103,10 @@ void MapTool::OnRender()
 
 	environment_.Render();
 
-	static int i = 1;
-	if (i)
-		single_shadow_.RenderDepthMap(XMVectorSet(5000, 5000, -5000, 0), XMVectorSet(0, 0, 0, 0));
-	i = 0;
-
-	single_shadow_.RenderShadowMap();
+	//single_shadow_.RenderShadowMap();
+	//single_shadow_.SetShadowMapSRV();
+	//cube_map_shadow_.CreateDepthMap(&light_mesh_level, sys_camera.GetCamera()->camera_pos);
 	light_mesh_level.Update();
-	single_shadow_.SetShadowMapSRV();
 	light_mesh_level.Render();
 
 

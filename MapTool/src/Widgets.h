@@ -24,6 +24,7 @@ enum class MsgType
 	OW_GUIDE_LINE,
 	OW_RES_VIEWER,
 	OPT_WIREFRAME,
+	OW_NAVI_EDITOR
 };
 
 class GwMainMenu : public reality::GuiWidget
@@ -48,10 +49,11 @@ public:
 	string visible_leaf;
 	string collision;
 	string camera_pos;
-	reality::SingleShadow* single_shadow = nullptr;
+	//reality::SingleShadow* single_shadow = nullptr;
+	CubemapShadow* cube_shadow_ = nullptr;
 
-	int db = 1;
-	float sdb = 1.0f;
+	int db = -10000;
+	float sdb = 0.0f;
 	float clp = 0.0f;
 
 public:

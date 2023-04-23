@@ -25,6 +25,10 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_RES_VIEWER;
         }
+        if (ImGui::MenuItem("Navigation Editor"))
+        {
+            msg_ = MsgType::OW_NAVI_EDITOR;
+        }
         if (ImGui::BeginMenu("Render Options"))
         {
             if (ImGui::MenuItem("WireFrame / Solid"))
@@ -73,33 +77,22 @@ void GwPorperty::Render()
         ImGui::Text(collision.c_str());
         ImGui::Text(camera_pos.c_str());
 
-        ImTextureID im_tex;
-        im_tex = (ImTextureID)(single_shadow->GetDepthMapSRV());
-        ImGui::Image(im_tex, ImVec2(200, 200));
-
-        im_tex = (ImTextureID)(single_shadow->GetRTSRV());
-        ImGui::Image(im_tex, ImVec2(200, 200));
+        ImGui::Text("[current tri index]");
+        ImGui::Text(to_string(PICKING->current_tri).c_str());
 
 
-        D3D11_RASTERIZER_DESC rs_desc;
-        ZeroMemory(&rs_desc, sizeof(rs_desc));
-        
-        rs_desc.FillMode = D3D11_FILL_SOLID;
-        rs_desc.CullMode = D3D11_CULL_NONE;
-        rs_desc.FrontCounterClockwise = false;
-        rs_desc.DepthClipEnable = false;
+        //for (int i = 0; i < 6; ++i)
+        //{
+        //    ImTextureID im_tex;
+        //    im_tex = (ImTextureID)(cube_shadow_->depth_srvs[i]);
+        //    ImGui::Image(im_tex, ImVec2(200, 200));
+        //}
 
-        ImGui::DragInt("DepthBias", &db, 1000);
-        ImGui::DragFloat("SlopeScaledDepthBias", &sdb, 0.01f);
-        ImGui::DragFloat("DepthBiasClamp", &clp, 0.01f);
+        //ImGui::DragInt("DepthBias", &db, 1000);
+        //ImGui::DragFloat("SlopeScaledDepthBias", &sdb, 0.1f);
+        //ImGui::DragFloat("DepthBiasClamp", &clp, 1000);
 
-        // Set depth bias parameters
-        rs_desc.DepthBias = db;
-        rs_desc.SlopeScaledDepthBias = sdb;
-        rs_desc.DepthBiasClamp = clp;
-
-        // Create the rasterizer state
-        HRESULT hr = DX11APP->GetDevice()->CreateRasterizerState(&rs_desc, &single_shadow->depth_bias_rs_);
+        //CreateDepthBiasRS(db, sdb, clp, &cube_shadow_->depth_bias_rs_);
     }
     ImGui::End();
 }

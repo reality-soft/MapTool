@@ -11,6 +11,7 @@ public:
 	void Frame();
 	void Release();  
 	XMVECTOR current_point;
+	UINT current_tri;
 
 private:
 	reality::CameraSystem* camera = nullptr;

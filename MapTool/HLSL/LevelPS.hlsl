@@ -58,20 +58,24 @@ float4 PS(PS_OUT input) : SV_Target
     albedo = ChangeValue(albedo, 0.5f);
     albedo = ApplyHemisphericAmbient(input.n, albedo);
     
-    //Shadow    
-    float2 projectTexCoord;
-    projectTexCoord.x = input.projection.x / input.projection.w / 2.0f + 0.5f;
-    projectTexCoord.y = -input.projection.y / input.projection.w / 2.0f + 0.5f;
-
-    float4 shadow_color = BlurShadowColor(projectTexCoord, shadow_map_tex, shadow_sampler_clamp, 512);
-    final_color = albedo * shadow_color;
+    final_color = ApplyCookTorrance(albedo, roughness.r, specular_strength, input.n, input.view_dir);
+    final_color += ApplyPointLight(WhiteColor(), input.n, input.origin, input.view_dir);
+    final_color += ApplySpotLight(WhiteColor(), input.n, input.origin, input.view_dir);
     
-    if (length(shadow_color.xyz) > 0.8f)
-    {
-        final_color = ApplyCookTorrance(albedo, roughness.r, specular_strength, input.n, input.view_dir);
-        final_color += ApplyPointLight(WhiteColor(), input.n, input.origin, input.view_dir);
-        final_color += ApplySpotLight(WhiteColor(), input.n, input.origin, input.view_dir);
-    }
+    //Shadow    
+    //float2 projectTexCoord;
+    //projectTexCoord.x = input.projection.x / input.projection.w / 2.0f + 0.5f;
+    //projectTexCoord.y = -input.projection.y / input.projection.w / 2.0f + 0.5f;
+
+    //float4 shadow_color = BlurShadowColor(projectTexCoord, shadow_map_tex, shadow_sampler_clamp, 512);
+    //final_color = albedo * shadow_color;
+    
+    //if (length(shadow_color.xyz) > 0.8f)
+    //{
+    //    final_color = ApplyCookTorrance(albedo, roughness.r, specular_strength, input.n, input.view_dir);
+    //    final_color += ApplyPointLight(WhiteColor(), input.n, input.origin, input.view_dir);
+    //    final_color += ApplySpotLight(WhiteColor(), input.n, input.origin, input.view_dir);
+    //}
      
     final_color = ApplyDistanceFog(final_color, input.origin);
 

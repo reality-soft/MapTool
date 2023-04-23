@@ -24,7 +24,7 @@ void GuideLineEditor::AddNewGuideLine(string name, int _guide_type)
 	GuideLine* new_guide_line = new GuideLine;
 	InstancedObject* new_node_mark = new InstancedObject;
 
-	new_node_mark->Init("SkySphere.stmesh", "StaticMeshVS.cso", guide_line_mat);
+	new_node_mark->Init("SkySphere.stmesh", "InstancingVS.cso", guide_line_mat);
 	new_guide_line->Init(guide_type);
 
 	guide_lines.insert(make_pair(name, new_guide_line));
@@ -59,6 +59,104 @@ void GuideLineEditor::DrawGuideLine()
 	current_mark->Render();
 }
 
+void GuideLineEditor::FloydWarshall()
+{
+	if (current_guide == nullptr)
+		return;
+
+	UINT rout_index = 0;
+	for (const auto& start : current_guide->line_nodes)
+	{
+		for (const auto& dest : current_guide->line_nodes)
+		{
+			if (XMVector3Equal(start.second, dest.second))
+				continue;
+
+			FloydRout new_rout;
+			new_rout.start_index = start.first;
+			new_rout.dest_index = dest.first;
+			new_rout.start = start.second;
+			new_rout.dest = dest.second;
+
+			RayShape rout_ray(_XMFLOAT3(start.second), _XMFLOAT3(dest.second));
+			rout_ray.start.y += 50;
+			rout_ray.end.y += 50;
+
+
+			auto callback = QUADTREE->Raycast(rout_ray);
+			if (callback.success == false)
+			{
+				new_rout.distance = Distance(start.second, dest.second);
+			}
+			else
+			{
+				map<float, UINT> trans_nodes_;
+				for (const auto& trans : current_guide->line_nodes)
+				{
+					if (trans.first == start.first || trans.first == dest.first)
+						continue;
+
+					RayShape start_trans_ray(_XMFLOAT3(start.second), _XMFLOAT3(trans.second));
+					start_trans_ray.start.y += 50;
+					start_trans_ray.end.y += 50;
+
+					RayShape trans_dest_ray(_XMFLOAT3(trans.second), _XMFLOAT3(dest.second));
+					trans_dest_ray.start.y += 50;
+					trans_dest_ray.end.y += 50;
+
+					auto start_trans_callback = QUADTREE->Raycast(start_trans_ray);
+					auto trans_dest_callback = QUADTREE->Raycast(trans_dest_ray);
+
+					if (start_trans_callback.success == false && trans_dest_callback.success == false)
+					{
+						float total_distance = 0;
+						total_distance += Distance(start.second, trans.second);
+						total_distance += Distance(trans.second, dest.second);
+
+						trans_nodes_.insert(make_pair(total_distance, trans.first));
+					}
+				}
+
+				if (trans_nodes_.empty() == false)
+				{
+					new_rout.distance = trans_nodes_.begin()->first;
+					new_rout.trans_index = trans_nodes_.begin()->second;
+					new_rout.trans = current_guide->line_nodes.at(new_rout.trans_index);
+				}
+			}
+
+			floyd_routs_.insert(make_pair(rout_index++, new_rout));
+		}
+	}
+}
+void GuideLineEditor::SaveMapdat_FloydRout()
+{
+	FloydWarshall();
+
+	FileTransfer out_mapdata("../../Contents/BinaryPackage/DND_FloydRout.mapdat", WRITE);
+
+	UINT num_routs = floyd_routs_.size();
+	out_mapdata.WriteBinary<UINT>(&num_routs, 1);
+
+	for (const auto& rout : floyd_routs_)
+	{
+		float distance = rout.second.distance;
+		UINT start_index = rout.second.start_index;
+		UINT dest_index = rout.second.dest_index;
+		UINT trans_index = rout.second.trans_index;
+		XMVECTOR start = rout.second.start;
+		XMVECTOR dest = rout.second.dest;
+		XMVECTOR trans = rout.second.trans;
+
+		out_mapdata.WriteBinary<float>(&distance, 1);
+		out_mapdata.WriteBinary<UINT>(&start_index, 1);
+		out_mapdata.WriteBinary<UINT>(&dest_index, 1);
+		out_mapdata.WriteBinary<UINT>(&trans_index, 1);
+		out_mapdata.WriteBinary<XMVECTOR>(&start, 1);
+		out_mapdata.WriteBinary<XMVECTOR>(&dest, 1);
+		out_mapdata.WriteBinary<XMVECTOR>(&trans, 1);
+	}
+}
 void GuideLineEditor::Active()
 {
 	if (GUI->FindWidget<GuideLineEditor>("guideline") == nullptr)
@@ -86,7 +184,7 @@ void GuideLineEditor::Update()
 	for (auto& pin : current_mark->instance_pool)
 	{
 		current_guide->line_nodes[pin.first] = XMLoadFloat3(&pin.second->T);
-		SetActorPos(custum_meshs[pin.first], pin.second->T);
+		//SetActorPos(custum_meshs[pin.first], pin.second->T);
 		//SCENE_MGR->GetActor<Actor>(flame_effects[pin.first])->ApplyMovement(TransformT(pin.second->T));
 	}
 
@@ -149,6 +247,11 @@ void GuideLineEditor::Render()
 		}
 	}
 
+	if (ImGui::Button("Svae Floyd Rout"))
+	{
+		SaveMapdat_FloydRout();
+	}
+
 	ImGui::Checkbox("View Pin Mesh", &view_pin_mesh);
 
 	if (!current_name.empty())
@@ -156,9 +259,9 @@ void GuideLineEditor::Render()
 		if (current_pin)
 		{
 			ImGui::Text(string("Selected Pin : " + current_pin->index).c_str());
-			ImGui::DragFloat("X : ", &current_pin->T.x, 0.1f);
-			ImGui::DragFloat("Y : ", &current_pin->T.y, 0.1f);
-			ImGui::DragFloat("Z : ", &current_pin->T.z, 0.1f);
+			ImGui::DragFloat("X : ", &current_pin->T.x, 1.f);
+			ImGui::DragFloat("Y : ", &current_pin->T.y, 1.f);
+			ImGui::DragFloat("Z : ", &current_pin->T.z, 1.f);
 		}
 
 		if (ImGui::TreeNode(current_name.c_str()))
@@ -177,8 +280,8 @@ void GuideLineEditor::Render()
 		if (ImGui::Button("+"))
 		{
 			AddNewNode(XMVectorZero());
-			entt::entity ent = AddCustumMeshActor("SK_Handgun_01.stmesh", "StaticMeshVS.cso");
-			custum_meshs.push_back(ent);
+			//entt::entity ent = AddCustumMeshActor("Vaccine.stmesh", "StaticMeshVS.cso");
+			//custum_meshs.push_back(ent);
 			//entt::entity ent = EFFECT_MGR->SpawnEffect<reality::FX_Flame>(XMVectorZero(), XMQuaternionIdentity(), XMVectorSet(10.0f, 10.0f, 10.0f, 0.0f));
 			//flame_effects.push_back(ent);
 		}
