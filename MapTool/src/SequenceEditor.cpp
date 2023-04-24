@@ -54,11 +54,6 @@ void SequenceEditor::TakeCut()
 	new_cut.current_camera_pitch = sys_camera_->GetCamera()->pitch_yaw.x;
 	new_cut.current_camera_yaw = sys_camera_->GetCamera()->pitch_yaw.y;
 
-	XMVECTOR scale, rot, trans;
-	XMMatrixDecompose(&scale, &rot, &trans, sys_camera_->world_matrix);
-	
-	XMVECTOR rot_q = XMQuaternionRotationRollPitchYaw(new_cut.current_camera_pitch, new_cut.current_camera_yaw, 0);
-
 	cuts.push_back(new_cut);
 
 	if (cut_count > 0)
