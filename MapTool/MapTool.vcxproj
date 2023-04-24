@@ -160,7 +160,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\NavigationEditor.h" />
     <ClInclude Include="src\FX\FX_BloodImpact.h" />
     <ClInclude Include="src\FX\FX_ConcreteImpact.h" />
     <ClInclude Include="src\FX\FX_Explosion.h" />
@@ -169,12 +168,13 @@
     <ClInclude Include="src\GuideLineEditor.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
+    <ClInclude Include="src\NavigationEditor.h" />
     <ClInclude Include="src\PickingMgr.h" />
     <ClInclude Include="src\ResourceSelector.h" />
+    <ClInclude Include="src\SequenceEditor.h" />
     <ClInclude Include="src\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\NavigationEditor.cpp" />
     <ClCompile Include="src\FX\FX_BloodImpact.cpp" />
     <ClCompile Include="src\FX\FX_ConcreteImpact.cpp" />
     <ClCompile Include="src\FX\FX_Explosion.cpp" />
@@ -183,8 +183,10 @@
     <ClCompile Include="src\GuideLineEditor.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
+    <ClCompile Include="src\NavigationEditor.cpp" />
     <ClCompile Include="src\PickingMgr.cpp" />
     <ClCompile Include="src\ResourceSelector.cpp" />
+    <ClCompile Include="src\SequenceEditor.cpp" />
     <ClCompile Include="src\Widgets.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

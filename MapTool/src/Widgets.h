@@ -24,7 +24,8 @@ enum class MsgType
 	OW_GUIDE_LINE,
 	OW_RES_VIEWER,
 	OPT_WIREFRAME,
-	OW_NAVI_EDITOR
+	OW_NAVI_EDITOR,
+	OW_SEQUENCE_EDITOR,
 };
 
 class GwMainMenu : public reality::GuiWidget

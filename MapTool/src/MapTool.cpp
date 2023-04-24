@@ -6,6 +6,7 @@ using namespace reality;
 
 void MapTool::OnInit()
 {
+	RESOURCE->LoadDir("../../Contents/Shader/", &ResourceMgr::ImportShaders);
 	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
@@ -64,10 +65,11 @@ void MapTool::OnUpdate()
 	QUADTREE->UpdatePhysics();
 	sys_camera.OnUpdate(SCENE_MGR->GetRegistry());
 	sys_light.OnUpdate(SCENE_MGR->GetRegistry());
-	environment_.Update(&sys_camera, &sys_light);
+	environment_.Update(sys_camera.GetCamera()->camera_pos, &sys_light);
 	sys_effect.OnUpdate(reg_scene_);
 
 	gw_property_->collide_pos = XMFLOAT4(PICKING->current_point.m128_f32);
+	gw_sequence_editor_.sys_camera_ = &sys_camera;
 	// Gui Msg Proc;
 
 	switch (gw_main_menu_->msg_)  
@@ -85,9 +87,16 @@ void MapTool::OnUpdate()
 	}
 	case MsgType::OPT_WIREFRAME:
 		NOT(wire_frame);
+		break;
 
 	case MsgType::OW_NAVI_EDITOR:
 		gw_navi_editor_.Active();
+		break;
+
+	case MsgType::OW_SEQUENCE_EDITOR:
+		gw_sequence_editor_.Active();
+		GUI->FindWidget<SequenceEditor>("sequence")->sys_camera_ = &sys_camera;
+		break;
 	}
 
 	QUADTREE->Frame(&sys_camera);

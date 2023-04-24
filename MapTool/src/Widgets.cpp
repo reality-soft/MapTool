@@ -29,6 +29,10 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_NAVI_EDITOR;
         }
+        if (ImGui::MenuItem("Sequence Editor"))
+        {
+            msg_ = MsgType::OW_SEQUENCE_EDITOR;
+        }
         if (ImGui::BeginMenu("Render Options"))
         {
             if (ImGui::MenuItem("WireFrame / Solid"))
