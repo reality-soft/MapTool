@@ -186,7 +186,7 @@ void GuideLineEditor::Update()
 	{
 		current_guide->line_nodes[pin.first] = XMLoadFloat3(&pin.second->T);
 		//SetActorPos(custum_meshs[pin.first], pin.second->T);
-		//SCENE_MGR->GetActor<Actor>(flame_effects[pin.first])->ApplyMovement(TransformT(pin.second->T));
+		SCENE_MGR->GetActor<Actor>(flame_effects[pin.first])->ApplyMovement(_XMVECTOR3(pin.second->T));
 	}
 
 	current_guide->UpdateLines();
@@ -283,8 +283,8 @@ void GuideLineEditor::Render()
 			AddNewNode(XMVectorZero());
 			//entt::entity ent = AddCustumMeshActor("Vaccine.stmesh", "StaticMeshVS.cso");
 			//custum_meshs.push_back(ent);
-			//entt::entity ent = EFFECT_MGR->SpawnEffect<reality::FX_Flame>(XMVectorZero(), XMQuaternionIdentity(), XMVectorSet(10.0f, 10.0f, 10.0f, 0.0f));
-			//flame_effects.push_back(ent);
+			entt::entity ent = EFFECT_MGR->SpawnEffect<reality::FX_Flame>(XMVectorZero(), XMQuaternionIdentity(), XMVectorSet(10.0f, 10.0f, 10.0f, 0.0f));
+			flame_effects.push_back(ent);
 		}
 		ImGui::SameLine(); 
 		if (ImGui::Button("-"))

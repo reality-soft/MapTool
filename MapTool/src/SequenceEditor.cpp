@@ -22,6 +22,22 @@ void SequenceEditor::Update()
 
 void SequenceEditor::Render()
 {
+	ImGui::Begin("Sequence Editor");
+
+	static int radio_value = 0;
+	ImGui::Text("Sequence Type");
+	ImGui::RadioButton("View Sequence", &radio_value, 0);
+	ImGui::RadioButton("Target Sequence", &radio_value, 1);
+	sequence_type = (SequenceType)radio_value;
+
+	if (sequence_type == SequenceType::TargetSequence)
+	{
+		if (ImGui::Button("Set Camera Pos To Target"))
+		{
+			sequence_target_pos_ = sys_camera_->GetCamera()->camera_pos;
+		}
+	}
+
 	if (ImGui::Button("Take Cut"))
 	{
 		TakeCut();
@@ -29,21 +45,36 @@ void SequenceEditor::Render()
 
 	if (ImGui::Button("Save Track"))
 	{
-		SaveTrack("../../Contents/BinaryPackage/DND_SequenceTrack_1.mapdat");
+		SaveTrack("../../Contents/BinaryPackage/DND_SequenceTrack_2.mapdat");
 	}
 
+	static float camera_speed = 100.0f;
+	if (ImGui::SliderFloat("Camera Speed", &camera_speed, 10, 1000))
+	{
+		sys_camera_->SetSpeed(camera_speed);
+	}
 	int i = 0;
 	for (auto& track : tracks)
 	{
-		auto vector = VectorToString(track.move_vector);
+		ImGui::Text(string("[Track" + to_string(i) + "]").c_str());
 
-		ImGui::Text(string("[Track" + to_string(i++) + "]").c_str());
+		auto vector = VectorToString(track.move_vector);
 		ImGui::Text("Move Vector");
 		ImGui::Text(vector.c_str());
-		ImGui::Text(to_string(track.length).c_str());
-		ImGui::Text(to_string(track.rotate_angle_x).c_str());
-		ImGui::Text(to_string(track.rotate_angle_y).c_str());
+
+		vector = VectorToString(sequence_target_pos_);
+		ImGui::Text("Sequence Targe");
+		ImGui::Text(vector.c_str());
+
+		ImGui::Text(to_string(Vector3Length(track.move_vector)).c_str());
+		ImGui::Text(to_string(track.rotate_pitch_yaw.x).c_str());
+		ImGui::Text(to_string(track.rotate_pitch_yaw.y).c_str());
+
+
+		i++;
 	}
+
+	ImGui::End();
 }
 
 void SequenceEditor::TakeCut()
@@ -60,10 +91,11 @@ void SequenceEditor::TakeCut()
 	{
 		SequenceTrack new_track;
 		XMVECTOR move_vector = cuts[cut_count].current_world_pos - cuts[cut_count - 1].current_world_pos;
-		new_track.move_vector = XMVector3Normalize(move_vector);
-		new_track.length = Vector3Length(move_vector);
-		new_track.rotate_angle_x = cuts[cut_count].current_camera_pitch - cuts[cut_count - 1].current_camera_pitch;
-		new_track.rotate_angle_y = cuts[cut_count].current_camera_yaw - cuts[cut_count - 1].current_camera_yaw;
+		new_track.move_vector = move_vector;
+		new_track.sequence_type = sequence_type;
+		new_track.sequence_target = sequence_target_pos_;
+		new_track.rotate_pitch_yaw.x = cuts[cut_count].current_camera_pitch - cuts[cut_count - 1].current_camera_pitch;
+		new_track.rotate_pitch_yaw.y = cuts[cut_count].current_camera_yaw - cuts[cut_count - 1].current_camera_yaw;
 	
 		tracks.push_back(new_track);
 	}

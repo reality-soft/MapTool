@@ -4,12 +4,18 @@
 
 using namespace reality;
 
+enum class SequenceType
+{
+	ViewSequence,
+	TargetSequence,
+};
+
 struct SequenceTrack
 {
+	SequenceType sequence_type;
 	XMVECTOR move_vector;
-	float rotate_angle_x;
-	float rotate_angle_y;
-	float length;
+	XMFLOAT2 rotate_pitch_yaw;
+	XMVECTOR sequence_target;
 };
 
 struct SequenceCutInfo
@@ -31,6 +37,9 @@ public:
 	void SaveTrack(string filename);
 
 	reality::CameraSystem* sys_camera_ = nullptr;
+	SequenceType sequence_type = SequenceType::ViewSequence;
+	XMVECTOR sequence_target_pos_ = {0, 0, 0, 0};
+
 private:
 	vector<SequenceCutInfo> cuts;
 	vector<SequenceTrack> tracks;

@@ -10,10 +10,11 @@ void MapTool::OnInit()
 	RESOURCE->Init("../../Contents/");
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
-	FbxImportOption import_option;
-	import_option.import_scale = 0.1f;
+	//FbxImportOption import_option;
+	//import_option.import_scale = 35.f;
+	////import_option.import_rotation = { 0, 0, 180, 0 };
 	//import_option.recalculate_normal = true;
-	//FBX->ImportAndSaveFbx("../../Contents/FBX/Vaccine.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/WEP_AK47.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
 	
 	GUI->AddWidget<GwMainMenu>("mainmenu");
 	GUI->AddWidget<GwPorperty>("property");
@@ -29,8 +30,9 @@ void MapTool::OnInit()
 	sys_light.SetGlobalLightPos({5000, 5000, -5000});
 	sys_camera.TargetTag(SCENE_MGR->GetRegistry(), "Debug");
 	sys_camera.OnCreate(SCENE_MGR->GetRegistry());
-	sys_camera.SetSpeed(1000);
+	sys_camera.SetSpeed(50);
 	sys_camera.SetNearZ(1.0f);
+	sys_camera.SetFov(45);
 	sys_camera.SetFarZ(10000.0f);
 	sys_effect.OnCreate(reg_scene_);
 
