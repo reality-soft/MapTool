@@ -11,11 +11,15 @@ void MapTool::OnInit()
 	ComponentSystem::GetInst()->OnInit(SCENE_MGR->GetRegistry());
 
 	//FbxImportOption import_option;
-	//import_option.import_scale = 35.f;
-	////import_option.import_rotation = { 0, 0, 180, 0 };
+	//import_option.import_scale = 1.f;
 	//import_option.recalculate_normal = true;
-	//FBX->ImportAndSaveFbx("../../Contents/FBX/WEP_AK47.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
-	
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_Kick.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_Punch_L.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_Punch_R.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_Run.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_StrongPunch.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//FBX->ImportAndSaveFbx("../../Contents/FBX/DND_BossZombie/DND_BossZombie_Walk.fbx", import_option, FbxVertexOption::BY_POLYGON_VERTEX);
+	//
 	GUI->AddWidget<GwMainMenu>("mainmenu");
 	GUI->AddWidget<GwPorperty>("property");
 	gw_main_menu_ = GUI->FindWidget<GwMainMenu>("mainmenu");
@@ -27,13 +31,13 @@ void MapTool::OnInit()
 	
 	sys_render.OnCreate(reg_scene_);
 	sys_light.OnCreate(SCENE_MGR->GetRegistry());
-	sys_light.SetGlobalLightPos({5000, 5000, -5000});
+	sys_light.SetGlobalLightPos({5000, 5000, -5000, 0 });
 	sys_camera.TargetTag(SCENE_MGR->GetRegistry(), "Debug");
 	sys_camera.OnCreate(SCENE_MGR->GetRegistry());
-	sys_camera.SetSpeed(50);
-	sys_camera.SetNearZ(1.0f);
-	sys_camera.SetFov(45);
+	sys_camera.SetSpeed(500);
+	sys_camera.SetNearZ(0.1f);
 	sys_camera.SetFarZ(10000.0f);
+	sys_camera.SetFov(90);
 	sys_effect.OnCreate(reg_scene_);
 
 	QUADTREE->Init(&light_mesh_level,SCENE_MGR->GetRegistry());
@@ -41,24 +45,13 @@ void MapTool::OnInit()
 	QUADTREE->CreatePhysicsCS();
 	QUADTREE->InitCollisionMeshes();
 	QUADTREE->view_collisions_ = true;
-	//QUADTREE->CreateQuadTreeData(4);
-	//QUADTREE->ExportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
-	//QUADTREE->ImportQuadTreeData("../../Contents/BinaryPackage/QuadTreeData_01.matdat");
-
 	PICKING->Init(&sys_camera);
 	
 	environment_.CreateEnvironment();
 	environment_.SetWorldTime(60, 60);
 	environment_.SetSkyColorByTime(RGB_TO_FLOAT(201, 205, 204), RGB_TO_FLOAT(11, 11, 19));
 	environment_.SetFogDistanceByTime(10000, 10000);
-	environment_.SetLightProperty(0.2f, 0.2f);
-
-	//single_shadow_.Init({5000,15000}, {8192,8192}, {1024,1024}, "DepthMapVS.cso", "ShadowVS.cso", "ShadowPS.cso");
-	//single_shadow_.static_mesh_level_ = &light_mesh_level;
-	//gw_property_->single_shadow = &single_shadow_;
-
-	//cube_map_shadow_.Init({ 10.f, 1000.f }, { 2048, 2048 }, "DepthMapVS.cso");
-	//gw_property_->cube_shadow_ = &cube_map_shadow_;
+	environment_.SetLightProperty(XMFLOAT4(1.0, 0.7, 0.5, 1), XMFLOAT4(0.05, 0.05, 0.1, 1), 0.1f, 0.25f);
 }
 
 void MapTool::OnUpdate()
@@ -91,10 +84,6 @@ void MapTool::OnUpdate()
 		NOT(wire_frame);
 		break;
 
-	case MsgType::OW_NAVI_EDITOR:
-		gw_navi_editor_.Active();
-		break;
-
 	case MsgType::OW_SEQUENCE_EDITOR:
 		gw_sequence_editor_.Active();
 		GUI->FindWidget<SequenceEditor>("sequence")->sys_camera_ = &sys_camera;
@@ -114,9 +103,6 @@ void MapTool::OnRender()
 
 	environment_.Render();
 
-	//single_shadow_.RenderShadowMap();
-	//single_shadow_.SetShadowMapSRV();
-	//cube_map_shadow_.CreateDepthMap(&light_mesh_level, sys_camera.GetCamera()->camera_pos);
 	light_mesh_level.Update();
 	light_mesh_level.Render();
 

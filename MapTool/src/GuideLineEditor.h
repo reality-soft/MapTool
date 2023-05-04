@@ -14,7 +14,6 @@ public:
 	map<string, InstancedObject*> node_marks;
 	InstancedObject* current_mark = nullptr;
 	InstanceData* current_pin = nullptr;
-	map<UINT, FloydRout> floyd_routs_;
 
 	string current_name;
 	
@@ -30,8 +29,6 @@ public:
 	void SelectGuideLine(string name);
 	void AddNewNode(XMVECTOR position);
 	void DrawGuideLine();
-	void FloydWarshall();
-	void SaveMapdat_FloydRout();
 
 	void Active();
 	virtual void Update() override;

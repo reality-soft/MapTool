@@ -25,10 +25,6 @@ void GwMainMenu::Render()
         {
             msg_ = MsgType::OW_RES_VIEWER;
         }
-        if (ImGui::MenuItem("Navigation Editor"))
-        {
-            msg_ = MsgType::OW_NAVI_EDITOR;
-        }
         if (ImGui::MenuItem("Sequence Editor"))
         {
             msg_ = MsgType::OW_SEQUENCE_EDITOR;

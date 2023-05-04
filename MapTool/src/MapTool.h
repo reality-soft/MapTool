@@ -5,7 +5,6 @@
 #include "StaticMeshLevel.h"
 #include "GuideLineEditor.h"
 #include "StaticShadows.h"
-#include "NavigationEditor.h"
 #include "SequenceEditor.h"
 
 class MapTool : public reality::Scene
@@ -39,7 +38,6 @@ public:
 	GwPorperty* gw_property_ = nullptr;
 	GuideLineEditor gw_guide_line_;
 	ResourceSelector res_selector_;
-	NavigationEditor gw_navi_editor_;
 	SequenceEditor gw_sequence_editor_;
 };
 

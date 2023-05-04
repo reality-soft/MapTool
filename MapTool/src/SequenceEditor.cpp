@@ -45,7 +45,7 @@ void SequenceEditor::Render()
 
 	if (ImGui::Button("Save Track"))
 	{
-		SaveTrack("../../Contents/BinaryPackage/DND_SequenceTrack_2.mapdat");
+		SaveTrack("../../Contents/BinaryPackage/DND_EndingSequence.mapdat");
 	}
 
 	static float camera_speed = 100.0f;

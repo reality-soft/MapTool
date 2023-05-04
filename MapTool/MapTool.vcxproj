@@ -168,7 +168,6 @@
     <ClInclude Include="src\GuideLineEditor.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\MapTool.h" />
-    <ClInclude Include="src\NavigationEditor.h" />
     <ClInclude Include="src\PickingMgr.h" />
     <ClInclude Include="src\ResourceSelector.h" />
     <ClInclude Include="src\SequenceEditor.h" />
@@ -183,7 +182,6 @@
     <ClCompile Include="src\GuideLineEditor.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
-    <ClCompile Include="src\NavigationEditor.cpp" />
     <ClCompile Include="src\PickingMgr.cpp" />
     <ClCompile Include="src\ResourceSelector.cpp" />
     <ClCompile Include="src\SequenceEditor.cpp" />
@@ -226,11 +224,6 @@
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>GS</EntryPointName>
     </FxCompile>
-    <FxCompile Include="HLSL\InstancingPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
     <FxCompile Include="HLSL\InstancingVS.hlsl">
       <ShaderType>Vertex</ShaderType>
       <ShaderModel>5.0</ShaderModel>
@@ -255,16 +248,6 @@
       <ShaderType>Compute</ShaderType>
       <ShaderModel>5.0</ShaderModel>
       <EntryPointName>CS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\ShadowPS.hlsl">
-      <ShaderType>Pixel</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>PS</EntryPointName>
-    </FxCompile>
-    <FxCompile Include="HLSL\ShadowVS.hlsl">
-      <ShaderType>Vertex</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
-      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile Include="HLSL\SkinningPS.hlsl">
       <ShaderType>Pixel</ShaderType>
